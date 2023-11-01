@@ -1,0 +1,15 @@
+{
+  "@@locale": "ru",
+  "title": "Суши шеф",
+  "@title": {
+    "type": "Суши шеф",
+    "placeholders": {}
+  },
+  "auth":"Авторизация",
+  "yourEmail":"Ваш email",
+  "yourPass":"Ваш пароль",
+  "login":"Войти",
+  "orders":"Заказы",
+  "profile":"Профиль",
+  "needHelp":"Нужна помощь?"
+}
