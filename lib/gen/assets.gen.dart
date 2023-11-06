@@ -57,8 +57,15 @@ class $AssetsImagesGen {
   SvgGenImage get forkandknife =>
       const SvgGenImage('assets/images/forkandknife.svg');
 
+  /// File path: assets/images/geo.svg
+  SvgGenImage get geo => const SvgGenImage('assets/images/geo.svg');
+
   /// File path: assets/images/location.svg
   SvgGenImage get location => const SvgGenImage('assets/images/location.svg');
+
+  /// File path: assets/images/noInternet.svg
+  SvgGenImage get noInternet =>
+      const SvgGenImage('assets/images/noInternet.svg');
 
   /// File path: assets/images/oh.svg
   SvgGenImage get oh => const SvgGenImage('assets/images/oh.svg');
@@ -83,7 +90,9 @@ class $AssetsImagesGen {
   List<dynamic> get values => [
         chat,
         forkandknife,
+        geo,
         location,
+        noInternet,
         oh,
         ordersTab,
         phone,

@@ -1,5 +1,5 @@
 class OrderResponseModel{
-  OrderResponseModel({required this.id,required this.parent_id,required this.status,required this.billing,required this.currency,required this.customer_note,this.date_completed,this.date_paid,required this.payment_method,required this.payment_method_title,required this.shipping,required this.total,});
+  OrderResponseModel({required this.lineItems,required this.id,required this.parent_id,required this.status,required this.billing,required this.currency,required this.customer_note,this.date_created,this.date_paid,required this.payment_method,required this.payment_method_title,required this.shipping,required this.total,});
   final int id;
   final int parent_id;
   final String status;
@@ -10,8 +10,9 @@ class OrderResponseModel{
   final String payment_method;
   final String payment_method_title;
   final String customer_note;
-  final DateTime? date_completed;
+  final DateTime? date_created;
   final DateTime? date_paid;
+  final List lineItems;
 
   static OrderResponseModel fromJson({required Map<String,dynamic> json})=>OrderResponseModel(
     id: json['id'],
@@ -24,8 +25,26 @@ class OrderResponseModel{
     payment_method: json['payment_method'],
     payment_method_title: json['payment_method_title'],
     customer_note: json['customer_note'],
-    date_completed: json['date_completed']!=null ? DateTime.tryParse(json['date_completed']) : null,
+    date_created: json['date_created']!=null ? _prepareDate(json['date_created']) : null,
     date_paid: json['date_paid']!=null ?DateTime.tryParse(json['date_paid']): null,
+    lineItems: json['line_items'] ?? [],
   );
+
+   Map<String,dynamic> toJson() {
+   return {
+    'status':status,
+    "total":total,
+     "date_paid":date_paid,
+  };
+ }
+///TODO: СДЕЛАЙ
+ static DateTime _prepareDate(dynamic date){
+     print(date);
+     if(DateTime.tryParse(date)!=null){
+       return DateTime.parse(date);
+     }else{
+       return DateTime.parse(date['date']+date['timezone']);
+     }
+ }
 
 }

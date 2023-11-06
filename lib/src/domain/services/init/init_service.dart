@@ -1,18 +1,26 @@
+import 'package:courier_app/src/domain/services/geo/geo_service.dart';
 import 'package:courier_app/src/domain/services/secure_storage/secure_storage_service.dart';
 import 'package:courier_app/src/presentation/ui/auth/auth_screen.dart';
+import 'package:courier_app/src/presentation/ui/auth/uikit/error_screen.dart';
 import 'package:courier_app/src/presentation/ui/main/main_screen.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 abstract class InitService{
   static Future<void> initialize() async {
-    await Future.delayed(Duration(seconds: 2));
-    final _token = await SecureStorage.getToken();
-    final _haveAccess = _token?.isNotEmpty==true;
-    if(_haveAccess) {
-      Get.to(MainScreen());
+    InternetConnection internetConnectionChecker = InternetConnection.createInstance();
+    if(await internetConnectionChecker.hasInternetAccess){
+      final _token = await SecureStorage.getToken();
+      final _haveAccess = _token?.isNotEmpty==true;
+      if(_haveAccess){
+        Get.to(MainScreen());
+        GeoService.determinePosition();
+      }else{
+        SecureStorage.clearData();
+        Get.to(AuthScreen());
+      }
     }else{
-      SecureStorage.clearData();
-      Get.to(AuthScreen());
+      Get.to(ErrorScreen(type: ErrorType.noInternet));
     }
   }
 }

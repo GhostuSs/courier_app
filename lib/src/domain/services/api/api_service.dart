@@ -6,6 +6,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiService{
+  static const _historyKey = 'history';
+  static const _newordersKey = 'new';
   static Dio get _dio =>Dio(
     BaseOptions(
       headers: {
@@ -34,7 +36,27 @@ class ApiService{
         "consumer_key":dotenv.env['CONSUMER_KEY'],
         "consumer_secret":dotenv.env['CONSUMER_SECRET'],
         "token":dotenv.env['TOKEN'],
-        "orders_type":"new",
+        "orders_type":_newordersKey,
+      };
+      final response = await _dio.get(dotenv.env['URL']!+ApiRoute.orders,queryParameters: _params);
+      final data = response.data;
+      if(data.runtimeType==List&&data.isNotEmpty==true) {
+        return data;
+      }
+    }on DioException catch(e){
+      print('/orders');
+      print(e);
+    }
+  }
+  static Future<List?> getHistory() async {
+    try{
+      final _params = {
+        'per_page':20,
+        'page':1,
+        "consumer_key":dotenv.env['CONSUMER_KEY'],
+        "consumer_secret":dotenv.env['CONSUMER_SECRET'],
+        "token":dotenv.env['TOKEN'],
+        "orders_type":_historyKey,
       };
       final response = await _dio.get(dotenv.env['URL']!+ApiRoute.orders,queryParameters: _params);
       final data = response.data;

@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:courier_app/res/localization/intl/messages_all.dart';
+import 'intl/messages_all.dart';
 
 // **************************************************************************
 // Generator: Flutter Intl IDE plugin
@@ -125,6 +125,76 @@ class AppLocale {
     return Intl.message(
       'Нужна помощь?',
       name: 'needHelp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `День`
+  String get day {
+    return Intl.message(
+      'День',
+      name: 'day',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Неделя`
+  String get week {
+    return Intl.message(
+      'Неделя',
+      name: 'week',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Месяц`
+  String get month {
+    return Intl.message(
+      'Месяц',
+      name: 'month',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Попробовать снова`
+  String get retry {
+    return Intl.message(
+      'Попробовать снова',
+      name: 'retry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Выйти`
+  String get exit {
+    return Intl.message(
+      'Выйти',
+      name: 'exit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Открыть настройки`
+  String get openSettings {
+    return Intl.message(
+      'Открыть настройки',
+      name: 'openSettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Заказ`
+  String get order {
+    return Intl.message(
+      'Заказ',
+      name: 'order',
       desc: '',
       args: [],
     );

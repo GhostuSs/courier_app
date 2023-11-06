@@ -6,17 +6,11 @@ abstract class SecureStorage {
 
   static FlutterSecureStorage get storage => const FlutterSecureStorage();
 
-  static Future<String?> getToken() async {
-    final token = await storage.read(key: _tokenKey);
-    print(token);
-    return token;
-  }
+  static Future<String?> getToken() async => await storage.read(key: _tokenKey);
 
-  static Future<void> clearData() async {
-    await storage.deleteAll();
-  }
+  static Future<void> clearData() async => await storage.deleteAll();
 
-  static Future<void> putToken({required AuthResponseModel responseModel}) async {
-    await storage.write(key: _tokenKey, value: responseModel.token);
-  }
+  static Future<void> putToken(
+          {required AuthResponseModel responseModel}) async =>
+      await storage.write(key: _tokenKey, value: responseModel.token);
 }
