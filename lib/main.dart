@@ -5,6 +5,7 @@ import 'package:courier_app/src/domain/controllers/main_controller.dart';
 import 'package:courier_app/src/domain/controllers/order/order_controller.dart';
 import 'package:courier_app/src/domain/services/api/api_service.dart';
 import 'package:courier_app/src/presentation/ui/loading/load_screen.dart';
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: "config.env");
+  FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 90));
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   print(await ApiService.getHistory());

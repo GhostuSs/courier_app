@@ -199,6 +199,16 @@ class AppLocale {
       args: [],
     );
   }
+
+  /// `Состав заказа`
+  String get orderCart {
+    return Intl.message(
+      'Состав заказа',
+      name: 'orderCart',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocale> {

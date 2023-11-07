@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "openSettings":
             MessageLookupByLibrary.simpleMessage("Открыть настройки"),
         "order": MessageLookupByLibrary.simpleMessage("Заказ"),
+        "orderCart": MessageLookupByLibrary.simpleMessage("Состав заказа"),
         "orders": MessageLookupByLibrary.simpleMessage("Заказы"),
         "profile": MessageLookupByLibrary.simpleMessage("Профиль"),
         "retry": MessageLookupByLibrary.simpleMessage("Попробовать снова"),

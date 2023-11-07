@@ -63,6 +63,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/location.svg
   SvgGenImage get location => const SvgGenImage('assets/images/location.svg');
 
+  /// File path: assets/images/merchant_placeholder.svg
+  SvgGenImage get merchantPlaceholder =>
+      const SvgGenImage('assets/images/merchant_placeholder.svg');
+
   /// File path: assets/images/noInternet.svg
   SvgGenImage get noInternet =>
       const SvgGenImage('assets/images/noInternet.svg');
@@ -92,6 +96,7 @@ class $AssetsImagesGen {
         forkandknife,
         geo,
         location,
+        merchantPlaceholder,
         noInternet,
         oh,
         ordersTab,

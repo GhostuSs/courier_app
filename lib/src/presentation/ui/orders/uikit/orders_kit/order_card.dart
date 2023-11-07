@@ -12,7 +12,7 @@ class OrderCard extends StatelessWidget {
     final theme = Theme.of(context);
     return InkWell(
       borderRadius: BorderRadius.circular(10.r),
-      onTap: ()=>Get.bottomSheet(OrderInfo(order: order)),
+      onTap: ()=>Get.bottomSheet(OrderInfo(order: order),isScrollControlled: true,ignoreSafeArea: false),
       child: Container(
         decoration: BoxDecoration(
             color: AppColors.gray3, borderRadius: BorderRadius.circular(10.r)),
