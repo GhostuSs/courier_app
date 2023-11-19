@@ -1,6 +1,8 @@
+import 'package:action_slider/action_slider.dart';
 import 'package:courier_app/res/barrels/barrel.dart';
 import 'package:courier_app/src/domain/models/order/order_response_model.dart';
 import 'package:courier_app/src/presentation/ui/orders/uikit/orders_kit/merchant_item.dart';
+
 
 class OrderInfo extends StatelessWidget {
   final OrderResponseModel order;
@@ -18,6 +20,17 @@ class OrderInfo extends StatelessWidget {
           topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r)),
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: ActionSlider.standard(
+            height: 56.h,
+            action: (_)=>print('actions'),
+            icon: Icon(Icons.add,color: AppColors.white,),
+            backgroundColor: AppColors.red,
+            boxShadow: [],
+            toggleColor: AppColors.white,
+          ),
+        ),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: AppColors.white,

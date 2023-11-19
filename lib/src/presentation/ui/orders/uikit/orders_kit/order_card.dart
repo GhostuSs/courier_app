@@ -1,4 +1,5 @@
 import 'package:courier_app/res/barrels/barrel.dart';
+import 'package:courier_app/src/domain/controllers/order/order_controller.dart';
 import 'package:courier_app/src/domain/models/order/order_response_model.dart';
 import 'package:courier_app/src/presentation/ui/orders/uikit/orders_kit/order_info.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +13,9 @@ class OrderCard extends StatelessWidget {
     final theme = Theme.of(context);
     return InkWell(
       borderRadius: BorderRadius.circular(10.r),
-      onTap: ()=>Get.bottomSheet(OrderInfo(order: order),isScrollControlled: true,ignoreSafeArea: false),
+      onTap: (){
+        Get.bottomSheet(OrderInfo(order: order,),isScrollControlled: true,ignoreSafeArea: false);
+        },
       child: Container(
         decoration: BoxDecoration(
             color: AppColors.gray3, borderRadius: BorderRadius.circular(10.r)),

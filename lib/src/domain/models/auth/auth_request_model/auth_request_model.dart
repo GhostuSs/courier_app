@@ -5,9 +5,12 @@ class AuthRequestModel{
   final String email;
   final String password;
 
-  Map<String,dynamic> toJson()=>{
-    "login":email,
-    "password":password,
-    "token":dotenv.env['TOKEN']
-  };
+  Map<String,dynamic> toJson(){
+    print(dotenv.env['TOKEN']);
+    return {
+      "login":email,
+      "password":password,
+      "token":dotenv.env['TOKEN']
+    };
+  }
 }

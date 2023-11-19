@@ -20,7 +20,6 @@ class ApiService{
       final response = await _dio.get(dotenv.env['URL']!+ApiRoute.login,queryParameters: model.toJson());
       print(response.data);
       final data = AuthResponseModel.fromJson(json:response.data);
-
       return data;
     }on DioException catch(e){
       print('/login');

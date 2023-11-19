@@ -1,7 +1,7 @@
 import 'package:courier_app/res/barrels/barrel.dart';
 import 'package:courier_app/src/domain/controllers/order/order_controller.dart';
+import 'package:courier_app/src/domain/models/order/statuses/order_statuses_model.dart';
 import 'package:courier_app/src/presentation/ui/orders/uikit/orders_kit/order_card.dart';
-import 'package:intl/intl.dart';
 
 class OrdersList extends StatelessWidget {
   const OrdersList({super.key});
@@ -16,14 +16,14 @@ class OrdersList extends StatelessWidget {
         child: Obx(
           () => Column(
             children: [
-              for(final period in controller.ordersPeriods.value)
+              for(final status in controller.statuses.value)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 16),
                       child: Text(
-                        DateFormat('dd MMMM').format(period),
+                        statusLabel(status: status),
                         style: theme.textTheme.headlineMedium
                             ?.copyWith(
                           fontSize: 20.sp,
@@ -32,7 +32,7 @@ class OrdersList extends StatelessWidget {
                         ),
                       ),
                     ),
-                    for (final order in controller.orders.value.where((el) => DateUtils.dateOnly(el.date_created!)==DateUtils.dateOnly(period)))
+                    for (final order in controller.orders.value.where((el) => el.status==status))
                       Padding(padding: EdgeInsets.only(bottom: 8),child: OrderCard(order: order),)
                   ],
                 ),
@@ -43,4 +43,16 @@ class OrdersList extends StatelessWidget {
       ),
     );
   }
+  
+  String statusLabel({required String status}){
+    switch(status){
+      case OrderStatuses.preparing:return "Готовится";
+      case OrderStatuses.completed: return "Выполнен";
+      case OrderStatuses.readyForCourier: return "Ожидает выдачи";
+      case OrderStatuses.done:return "Готов";
+      default: return "Обрабатывается";
+    }
+  }
+  
+
 }
