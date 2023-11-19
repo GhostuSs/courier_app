@@ -1,4 +1,5 @@
 import 'package:courier_app/src/domain/models/cart/merchant_item_model.dart';
+import 'package:courier_app/src/domain/models/order/statuses/order_statuses_model.dart';
 import 'package:courier_app/src/domain/models/shipping/shipping_model.dart';
 
 class OrderResponseModel {
@@ -20,7 +21,7 @@ class OrderResponseModel {
   });
   final int id;
   final int parent_id;
-  final String status;
+  String status;
   final String currency;
   final double total;
   final int number;
@@ -51,8 +52,9 @@ class OrderResponseModel {
         date_paid: json['date_paid'] != null
             ? DateTime.tryParse(json['date_paid'])
             : null,
-        lineItems: List.generate((json['line_items'] ?? []).length, (index) => CartModel.fromJson(json: json['line_items'][index])),
-        number: int.tryParse(json['number'])??0,
+        lineItems: List.generate((json['line_items'] ?? []).length,
+            (index) => CartModel.fromJson(json: json['line_items'][index])),
+        number: int.tryParse(json['number']) ?? 0,
       );
 
   Map<String, dynamic> toJson() {
@@ -63,6 +65,28 @@ class OrderResponseModel {
       "id": id,
     };
   }
+
+  static OrderResponseModel empty() => OrderResponseModel(
+      lineItems: [],
+      id: 0,
+      parent_id: 0,
+      status: OrderStatuses.completed,
+      billing: {},
+      currency: '',
+      customer_note: '',
+      payment_method: '',
+      payment_method_title: '',
+      shipping: ShippingModel(
+          city: '',
+          state: '',
+          postcode: '',
+          country: '',
+          phone: '',
+          first_name: '',
+          last_name: '',
+          company: ''),
+      total: 0,
+      number: 0);
 
   ///TODO: СДЕЛАЙ
   static DateTime _prepareDate(dynamic date) {

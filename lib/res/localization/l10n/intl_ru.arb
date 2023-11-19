@@ -19,5 +19,7 @@
   "exit":"Выйти",
   "openSettings":"Открыть настройки",
   "order":"Заказ",
-  "orderCart":"Состав заказа"
+  "orderCart":"Состав заказа",
+  "orderPicked":"Заказ забрал",
+  "orderDelivered":"Заказ доставлен"
 }

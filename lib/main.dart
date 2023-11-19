@@ -3,6 +3,7 @@ import 'package:courier_app/res/theme/themes.dart';
 import 'package:courier_app/src/domain/controllers/auth_controller.dart';
 import 'package:courier_app/src/domain/controllers/main_controller.dart';
 import 'package:courier_app/src/domain/controllers/order/order_controller.dart';
+import 'package:courier_app/src/domain/services/secure_storage/secure_storage_service.dart';
 import 'package:courier_app/src/presentation/ui/loading/load_screen.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ Future<void> main() async {
   await dotenv.load(fileName: "config.env");
   FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 90));
   WidgetsFlutterBinding.ensureInitialized();
+  await SecureStorage.getToken();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const App());
 }

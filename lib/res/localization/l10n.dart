@@ -209,6 +209,26 @@ class AppLocale {
       args: [],
     );
   }
+
+  /// `Заказ забрал`
+  String get orderPicked {
+    return Intl.message(
+      'Заказ забрал',
+      name: 'orderPicked',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Заказ доставлен`
+  String get orderDelivered {
+    return Intl.message(
+      'Заказ доставлен',
+      name: 'orderDelivered',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocale> {

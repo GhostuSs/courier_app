@@ -21,8 +21,11 @@ class AuthController extends GetxController {
   Future<void> authorize() async {
     final AuthRequestModel model = AuthRequestModel(email: login.value, password: pass.value);
     final loginData = await ApiService.login(model: model);
+    print("LOGINDATA");
+    print(loginData?.token);
     if(loginData!=null){
       await SecureStorage.putToken(responseModel: loginData);
+      await SecureStorage.getToken();
       Get.to(MainScreen());
         }
   }

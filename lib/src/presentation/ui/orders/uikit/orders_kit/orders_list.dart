@@ -47,10 +47,11 @@ class OrdersList extends StatelessWidget {
   String statusLabel({required String status}){
     switch(status){
       case OrderStatuses.preparing:return "Готовится";
-      case OrderStatuses.completed: return "Выполнен";
       case OrderStatuses.readyForCourier: return "Ожидает выдачи";
       case OrderStatuses.done:return "Готов";
-      default: return "Обрабатывается";
+      case OrderStatuses.completed:return "Выполнен";
+      case OrderStatuses.courier:return "Доставляется";
+      default: return 'Обрабатывается';
     }
   }
   

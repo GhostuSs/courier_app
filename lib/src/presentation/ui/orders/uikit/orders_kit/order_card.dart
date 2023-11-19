@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 class OrderCard extends StatelessWidget {
   final OrderResponseModel order;
   const OrderCard({super.key, required this.order});
+  OrderController get controller => Get.find<OrderController>();
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,8 @@ class OrderCard extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(10.r),
       onTap: (){
-        Get.bottomSheet(OrderInfo(order: order,),isScrollControlled: true,ignoreSafeArea: false);
+        controller.selectOrder(order:order);
+        Get.bottomSheet(OrderInfo(),isScrollControlled: true,ignoreSafeArea: false);
         },
       child: Container(
         decoration: BoxDecoration(

@@ -6,13 +6,15 @@ abstract class OrderStatuses{
   /// Готов
   static const String done = 'wc-done';
   /// Выполнен
-  static const String completed = 'wc-completed';
+  static const String completed = 'completed';
+  static const String courier = 'kurier';
+  static const String trash = 'trash';
 
 // "wc-processing": "Обработка",
 // "wc-making": "Изготавливается",
 // "wc-done": "Готов",
 // "wc-wait-stock": "Ожидает выдачи",
-// "wc-kurier": "Курьер выехал",
+// "kurier": "Курьер выехал",
 // "wc-completed": "Выполнен",
 // "wc-cancelled": "Отменен",
 // "wc-pending": "Ожидание оплаты",

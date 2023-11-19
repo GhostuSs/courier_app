@@ -7,23 +7,21 @@ class EmptyOrder extends StatelessWidget {
   Widget build(BuildContext context){
     final theme = Theme.of(context);
 
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Assets.images.oh.svg(width: 56.w),
-          const SizedBox(
-            height: 30,
-            width: double.infinity,
-          ),
-          RichText(
-              text: TextSpan(
-            text: 'Заказов пока нет',
-            style: theme.textTheme.displayMedium,
-          ))
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Assets.images.oh.svg(width: 56.w),
+        const SizedBox(
+          height: 30,
+          width: double.infinity,
+        ),
+        RichText(
+            text: TextSpan(
+              text: 'Заказов пока нет',
+              style: theme.textTheme.displayMedium,
+            ))
+      ],
     );
   }
 }
