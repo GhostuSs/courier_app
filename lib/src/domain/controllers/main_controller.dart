@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 class MainController extends GetxController {
   RxInt currIndex = 0.obs;
   static const screens = [
-    const OrdersScreen(),
-    const ProfileScreen(),
+    OrdersScreen(),
+    ProfileScreen(),
   ];
 
   void changeIndex({required int index}) => currIndex.value = index;

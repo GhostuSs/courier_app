@@ -27,46 +27,58 @@ class MerchantItem extends StatelessWidget {
                   width: 116.w,
                   height: 110.h,
                   color: AppColors.gray3,
-                  child: FastCachedImage(url: merchant.image,
+                  child: FastCachedImage(
+                    url: merchant.image,
                     gaplessPlayback: true,
-                    width: 116.w,height: 110.h,errorBuilder: (_,c,s)=>Center(
+                    width: 116.w,
+                    height: 110.h,
+                    errorBuilder: (_, c, s) => Center(
                       child: Assets.images.merchantPlaceholder.svg(width: 48.w),
-                    ),),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
-              Expanded(child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  RichText(text: TextSpan(
-                    text: merchant.name,
-                    style: theme.textTheme.displayMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16.sp,
-                      color: AppColors.black,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        text: merchant.name,
+                        style: theme.textTheme.displayMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16.sp,
+                          color: AppColors.black,
+                        ),
+                      ),
                     ),
-                  ),),
-                  const SizedBox(height: 4),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(merchant.total.round().toString()+' ₽',style: theme.textTheme.displayMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16.sp,
-                        color: AppColors.black,
-                      ),),
-                      Text(merchant.quantity.toString()+' шт',style: theme.textTheme.displayMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16.sp,
-                        color: AppColors.gray1,
-                      ),),
-                    ],
-                  ),
-
-                ],
-              ),),
+                    const SizedBox(height: 4),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${merchant.total.round()} ₽',
+                          style: theme.textTheme.displayMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16.sp,
+                            color: AppColors.black,
+                          ),
+                        ),
+                        Text(
+                          '${merchant.quantity} шт',
+                          style: theme.textTheme.displayMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16.sp,
+                            color: AppColors.gray1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           )
         ],

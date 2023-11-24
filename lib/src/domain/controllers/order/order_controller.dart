@@ -20,12 +20,13 @@ class OrderController extends GetxController {
 
   Future<void> getOrders() async {
     loadingOrders.value = true;
-    statuses.value={};
+    statuses.value = {};
     orders.value = [];
     final orderData = await ApiService.getOrders() ?? [];
     for (final order in orderData) {
       final orderModel = OrderResponseModel.fromJson(json: order);
-      if(orderModel.status!=OrderStatuses.completed&&orderModel.status!=OrderStatuses.trash){
+      if (orderModel.status != OrderStatuses.completed &&
+          orderModel.status != OrderStatuses.trash) {
         orders.value.add(orderModel);
         statuses.add(orderModel.status);
       }
@@ -34,14 +35,14 @@ class OrderController extends GetxController {
     loadingOrders.value = false;
   }
 
-  Future<void> getHistory()async{
-    loadingHistory.value=true;
+  Future<void> getHistory() async {
+    loadingHistory.value = true;
     history.value = [];
     final historyData = await ApiService.getHistory() ?? [];
     for (final order in historyData) {
       final orderModel = OrderResponseModel.fromJson(json: order);
       print(orderModel.status);
-      if(orderModel.status==OrderStatuses.completed){
+      if (orderModel.status == OrderStatuses.completed) {
         history.value.add(orderModel);
         if (orderModel.date_created != null)
           historyPeriods.add(DateUtils.dateOnly(orderModel.date_created!));
@@ -61,12 +62,13 @@ class OrderController extends GetxController {
     if (selectedOrder.value.status != OrderStatuses.courier) {
       if (await ApiService.acceptOrder(order_id: selectedOrder.value.id) ==
           true) {
-        selectedOrder.value.status=OrderStatuses.courier;
+        selectedOrder.value.status = OrderStatuses.courier;
         await getOrders();
       }
     } else {
-      if(await ApiService.deliverOrder(order_id:selectedOrder.value.id)==true){
-        selectedOrder.value.status=OrderStatuses.completed;
+      if (await ApiService.deliverOrder(order_id: selectedOrder.value.id) ==
+          true) {
+        selectedOrder.value.status = OrderStatuses.completed;
         await getOrders();
       }
     }

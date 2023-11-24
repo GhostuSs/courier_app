@@ -1,10 +1,13 @@
-abstract class OrderStatuses{
+abstract class OrderStatuses {
   /// Изготавливается
   static const String preparing = 'wc-making';
+
   /// Ожидает выдачи
   static const String readyForCourier = 'wc-wait-stock';
+
   /// Готов
   static const String done = 'wc-done';
+
   /// Выполнен
   static const String completed = 'completed';
   static const String courier = 'kurier';

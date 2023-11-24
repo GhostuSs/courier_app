@@ -28,7 +28,7 @@ class OrderInfo extends StatelessWidget {
                           .selectedOrder.value.status !=
                       OrderStatuses.completed
                   ? Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Container(
                         height: 56.h,
                         child: Stack(
@@ -43,17 +43,22 @@ class OrderInfo extends StatelessWidget {
                                     'Подтвердите, что ${controller.selectedOrder.value.status == OrderStatuses.courier ? "заказ доставлен получателю" : "забрали заказ и выезжайте на адрес доставки"}'),
                                 actions: [
                                   CupertinoDialogAction(
-                                    child: Text('Подтвердить'),
+                                    child: const Text('Подтвердить'),
                                     onPressed: () async {
                                       await controller.handleOrderStatus();
                                       Get.back();
-                                      if(controller.selectedOrder.value.status==OrderStatuses.completed)Get.dialog(OrderDelivered(number:controller.selectedOrder.value.id));
+                                      if (controller
+                                              .selectedOrder.value.status ==
+                                          OrderStatuses.completed)
+                                        Get.dialog(OrderDelivered(
+                                            number: controller
+                                                .selectedOrder.value.id));
                                     },
                                   ),
                                   CupertinoDialogAction(
-                                    child: Text("Отмена"),
+                                    child: const Text('Отмена'),
                                     isDefaultAction: true,
-                                    onPressed: () => Get.back(),
+                                    onPressed: Get.back,
                                   ),
                                 ],
                               )),
@@ -66,7 +71,7 @@ class OrderInfo extends StatelessWidget {
                                           OrderStatuses.courier
                                       ? AppColors.green
                                       : AppColors.red,
-                              boxShadow: [],
+                              boxShadow: const [],
                               toggleColor: AppColors.white,
                             ),
                             Align(
@@ -92,13 +97,13 @@ class OrderInfo extends StatelessWidget {
                 elevation: 0,
                 backgroundColor: AppColors.white,
                 title: Text(
-                  locale.order + " № ${controller.selectedOrder.value.number}",
+                  '${locale.order} № ${controller.selectedOrder.value.number}',
                   style: theme.textTheme.displayMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                     fontSize: 20.sp,
                   ),
                 ),
-                actions: [
+                actions: const [
                   // InkWell(
                   //   child: Container(
                   //     padding: EdgeInsets.symmetric(horizontal: 16),
@@ -122,7 +127,7 @@ class OrderInfo extends StatelessWidget {
                 ),
               ),
               body: SingleChildScrollView(
-                physics: ClampingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 child: SafeArea(
                     minimum: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
@@ -160,7 +165,7 @@ class OrderInfo extends StatelessWidget {
                                       .isNotEmpty ==
                                   true)
                                 Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 8),
                                   decoration: BoxDecoration(
                                     color: AppColors.yellow2.withOpacity(0.36),
@@ -182,7 +187,7 @@ class OrderInfo extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 24),
+                          padding: const EdgeInsets.symmetric(vertical: 24),
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
@@ -192,14 +197,14 @@ class OrderInfo extends StatelessWidget {
                             child: Row(
                               children: [
                                 Assets.images.ruble.svg(width: 24.sp),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     RichText(
                                       text: TextSpan(
                                         text:
-                                            "${controller.selectedOrder.value.total.round()} ₽",
+                                            '${controller.selectedOrder.value.total.round()} ₽',
                                         style: theme.textTheme.displayMedium
                                             ?.copyWith(
                                           fontWeight: FontWeight.w700,
@@ -210,8 +215,8 @@ class OrderInfo extends StatelessWidget {
                                     ),
                                     RichText(
                                       text: TextSpan(
-                                        text:
-                                            "${controller.selectedOrder.value.payment_method_title}",
+                                        text: controller.selectedOrder.value
+                                            .payment_method_title,
                                         style: theme.textTheme.displayMedium
                                             ?.copyWith(
                                           fontWeight: FontWeight.w400,
@@ -248,42 +253,47 @@ class OrderInfo extends StatelessWidget {
   }
 }
 
-
 class OrderDelivered extends StatelessWidget {
   final int number;
   const OrderDelivered({super.key, required this.number});
 
   @override
   Widget build(BuildContext context) {
-    final theme =Theme.of(context);
-    Future.delayed(Duration(seconds: 2)).then((value) => Navigator.pop(context));
-    return Expanded(child: Column(
+    final theme = Theme.of(context);
+    Future.delayed(const Duration(seconds: 2))
+        .then((value) => Navigator.pop(context));
+    return Expanded(
+        child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-      Center(
-        child: Container(
-          constraints: BoxConstraints.expand(
-            width: 200.w,
-            height: 200.w,
+        Center(
+          child: Container(
+            constraints: BoxConstraints.expand(
+              width: 200.w,
+              height: 200.w,
+            ),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle, color: AppColors.red.withOpacity(0.9)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Assets.images.delivered.svg(
+                  width: 56.sp,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Заказ № $number\nдоставлен',
+                  style: theme.textTheme.displaySmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16.sp,
+                    color: AppColors.white,
+                  ),
+                )
+              ],
+            ),
           ),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.red.withOpacity(0.9)
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Assets.images.delivered.svg(width: 56.sp,),
-              const SizedBox(height: 8),
-              Text('Заказ № $number\nдоставлен',style: theme.textTheme.displaySmall?.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 16.sp,
-                color: AppColors.white,
-              ),)
-            ],
-          ),
-        ),
-      )
-    ],));
+        )
+      ],
+    ));
   }
 }

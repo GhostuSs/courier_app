@@ -6,21 +6,22 @@ import 'package:courier_app/src/presentation/ui/main/main_screen.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
-abstract class InitService{
+abstract class InitService {
   static Future<void> initialize() async {
-    InternetConnection internetConnectionChecker = InternetConnection.createInstance();
-    if(await internetConnectionChecker.hasInternetAccess){
+    InternetConnection internetConnectionChecker =
+        InternetConnection.createInstance();
+    if (await internetConnectionChecker.hasInternetAccess) {
       final _token = await SecureStorage.getToken();
-      final _haveAccess = _token?.isNotEmpty==true;
-      if(_haveAccess){
-        Get.to(MainScreen());
+      final _haveAccess = _token?.isNotEmpty == true;
+      if (_haveAccess) {
+        Get.to(const MainScreen());
         GeoService.determinePosition();
-      }else{
+      } else {
         SecureStorage.clearData();
-        Get.to(AuthScreen());
+        Get.to(const AuthScreen());
       }
-    }else{
-      Get.to(ErrorScreen(type: ErrorType.noInternet));
+    } else {
+      Get.to(const ErrorScreen(type: ErrorType.noInternet));
     }
   }
 }

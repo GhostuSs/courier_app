@@ -11,7 +11,7 @@ abstract class SecureStorage {
 
   static Future<String?> getToken() async =>
       await storage.read(key: _tokenKey).then(
-          (value) => preloadedToken = kDebugMode ? dotenv.env['TOKEN'] : value);
+          (value) => preloadedToken = value);
 
   static Future<void> clearData() async =>
       await storage.deleteAll().then((value) => preloadedToken = null);

@@ -10,23 +10,23 @@ class AuthController extends GetxController {
   RxString pass = ''.obs;
   RxBool entryEnabled = false.obs;
   RxBool obscurePass = true.obs;
-  void onChange({String? login,String?pass}){
-    if(login!=null)this.login.value=login;
-    if(pass!=null)this.pass.value=pass;
-    entryEnabled.value = EmailValidator.validate(this.login.value) && this.pass.value.length >= 6;
+  void onChange({String? login, String? pass}) {
+    if (login != null) this.login.value = login;
+    if (pass != null) this.pass.value = pass;
+    entryEnabled.value = EmailValidator.validate(this.login.value) &&
+        this.pass.value.length >= 6;
   }
 
-  void changeObscuring()=>obscurePass.value=!obscurePass.value;
+  void changeObscuring() => obscurePass.value = !obscurePass.value;
 
   Future<void> authorize() async {
-    final AuthRequestModel model = AuthRequestModel(email: login.value, password: pass.value);
+    final model = AuthRequestModel(email: login.value, password: pass.value);
     final loginData = await ApiService.login(model: model);
-    print("LOGINDATA");
-    print(loginData?.token);
-    if(loginData!=null){
+    if (loginData != null) {
       await SecureStorage.putToken(responseModel: loginData);
       await SecureStorage.getToken();
-      Get.to(MainScreen());
-        }
+      Future.delayed(const Duration(milliseconds: 500))
+          .then((value) => Get.to(const MainScreen()));
+    }
   }
 }

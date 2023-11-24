@@ -6,7 +6,13 @@ class RawButton extends StatelessWidget {
   final bool active;
   final Color? customColor;
   final bool? invertTextColor;
-  const RawButton({super.key, required this.label, required this.onTap, required this.active, this.customColor, this.invertTextColor});
+  const RawButton(
+      {super.key,
+      required this.label,
+      required this.onTap,
+      required this.active,
+      this.customColor,
+      this.invertTextColor});
 
   @override
   Widget build(BuildContext context) {
@@ -16,17 +22,23 @@ class RawButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(10.r),
       child: AnimatedContainer(
         constraints: BoxConstraints.expand(height: 56.h),
-        duration: Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
-          color: customColor ?? (active ? AppColors.red :AppColors.redFocus),
+          color: customColor ?? (active ? AppColors.red : AppColors.redFocus),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(label,style: theme.textTheme.headline3?.copyWith(
-              color: active ? invertTextColor==true ? AppColors.black :AppColors.white :AppColors.white.withOpacity(0.5)
-            ),),
+            Text(
+              label,
+              style: theme.textTheme.headline3?.copyWith(
+                  color: active
+                      ? invertTextColor == true
+                          ? AppColors.black
+                          : AppColors.white
+                      : AppColors.white.withOpacity(0.5)),
+            ),
           ],
         ),
       ),

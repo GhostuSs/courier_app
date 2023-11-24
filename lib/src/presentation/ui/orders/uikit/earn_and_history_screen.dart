@@ -1,10 +1,9 @@
 import 'package:courier_app/res/barrels/barrel.dart';
 import 'package:courier_app/src/domain/controllers/order/order_controller.dart';
+import 'package:courier_app/src/domain/models/order/order_response_model.dart';
 import 'package:courier_app/src/presentation/ui/orders/uikit/orders_kit/order_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-
-import '../../../../domain/models/order/order_response_model.dart';
 
 class EarnAndHistoryScreen extends StatelessWidget {
   const EarnAndHistoryScreen({super.key});
@@ -46,128 +45,132 @@ class EarnAndHistoryScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: GetBuilder(
               init: controller,
-              initState: (_)=>controller.getHistory(),
-              builder: (_){
+              initState: (_) => controller.getHistory(),
+              builder: (_) {
                 return Obx(() => controller.loadingHistory.value
                     ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 40.h),
-                    Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.red,
-                      ),
-                    )
-                  ],
-                )
-                    : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      constraints: BoxConstraints.expand(
-                        width: double.infinity, height: 55.h,
-                      ),
-                      child: CupertinoSlidingSegmentedControl(
-                        backgroundColor: AppColors.gray3,
-                        groupValue: controller.historyTabValue.value,
-                        thumbColor: AppColors.red,
-                        children: {
-                          0: _CustomTab(
-                            label: locale.day,
-                            chosen: controller.historyTabValue.value == 0,
-                          ),
-                          1: _CustomTab(
-                            label: locale.week,
-                            chosen: controller.historyTabValue.value == 1,
-                          ),
-                          2: _CustomTab(
-                            label: locale.month,
-                            chosen: controller.historyTabValue.value == 2,
-                          ),
-                        },
-                        onValueChanged: (value) =>
-                            controller.selectPeriod(value: value ?? 0),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 27, bottom: 10),
-                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.arrow_back_ios_new_rounded,
-                            color: AppColors.red,
-                            size: 16.sp,
-                          ),
+                          SizedBox(height: 40.h),
+                          Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.red,
+                            ),
+                          )
+                        ],
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(
-                              _dateSelector(),
-                              style:
-                              theme.textTheme.headlineMedium?.copyWith(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.red,
-                              ),
+                            constraints: BoxConstraints.expand(
+                              width: double.infinity,
+                              height: 55.h,
+                            ),
+                            child: CupertinoSlidingSegmentedControl(
+                              backgroundColor: AppColors.gray3,
+                              groupValue: controller.historyTabValue.value,
+                              thumbColor: AppColors.red,
+                              children: {
+                                0: _CustomTab(
+                                  label: locale.day,
+                                  chosen: controller.historyTabValue.value == 0,
+                                ),
+                                1: _CustomTab(
+                                  label: locale.week,
+                                  chosen: controller.historyTabValue.value == 1,
+                                ),
+                                2: _CustomTab(
+                                  label: locale.month,
+                                  chosen: controller.historyTabValue.value == 2,
+                                ),
+                              },
+                              onValueChanged: (value) =>
+                                  controller.selectPeriod(value: value ?? 0),
                             ),
                           ),
-                          Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            color: AppColors.red,
-                            size: 16.sp,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${earnHandler()}' + " ₽",
-                            style: theme.textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 36.sp,
-                                color: AppColors.black),
-                          )
-                        ],
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        for (final day in controller.historyPeriods.value.where((element) => _conditionHandler(date: element)))
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(vertical: 16),
-                                child: Text(
-                                  DateFormat('dd MMMM').format(day),
-                                  style: theme.textTheme.headlineMedium
-                                      ?.copyWith(
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.black,
+                          Container(
+                            padding: const EdgeInsets.only(top: 27, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.arrow_back_ios_new_rounded,
+                                  color: AppColors.red,
+                                  size: 16.sp,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  child: Text(
+                                    _dateSelector(),
+                                    style: theme.textTheme.headlineMedium
+                                        ?.copyWith(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.red,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              for (final data in controller.history.value
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: AppColors.red,
+                                  size: 16.sp,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${earnHandler()}' ' ₽',
+                                style: theme.textTheme.headlineMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 36.sp,
+                                    color: AppColors.black),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              for (final day in controller.historyPeriods.value
                                   .where((element) =>
-                              DateUtils.dateOnly(
-                                  element.date_created!) ==
-                                  DateUtils.dateOnly(day)))
-                                Container(
-                                  padding: const EdgeInsets.only(bottom: 8),
-                                  child: OrderCard(
-                                    order: data,
-                                  ),
+                                      _conditionHandler(date: element)))
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
+                                      child: Text(
+                                        DateFormat('dd MMMM').format(day),
+                                        style: theme.textTheme.headlineMedium
+                                            ?.copyWith(
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    for (final data in controller.history.value
+                                        .where((element) =>
+                                            DateUtils.dateOnly(
+                                                element.date_created!) ==
+                                            DateUtils.dateOnly(day)))
+                                      Container(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8),
+                                        child: OrderCard(
+                                          order: data,
+                                        ),
+                                      )
+                                  ],
                                 )
                             ],
-                          )
-                      ],
-                    ),
-                  ],
-                ));
+                          ),
+                        ],
+                      ));
               },
             ),
           )),
@@ -181,37 +184,53 @@ class EarnAndHistoryScreen extends StatelessWidget {
       case 0:
         return formatter.format(dateTime);
       case 1:
-        return formatter.format(mostRecentMonday(dateTime)) +
-            " - " +
-            formatter.format(findLastDateOfTheWeek(dateTime));
+        return '${formatter.format(mostRecentMonday(dateTime))} - ${formatter.format(findLastDateOfTheWeek(dateTime))}';
       case 2:
-        return formatter.format(findFirstDateOfTheMonth(dateTime)) +
-            ' - ' +
-            formatter.format(findLastDateOfTheMonth(dateTime));
+        return '${formatter.format(findFirstDateOfTheMonth(dateTime))} - ${formatter.format(findLastDateOfTheMonth(dateTime))}';
       default:
         return '';
     }
   }
-  
-  bool _conditionHandler({required DateTime date}){
-    final _current = DateUtils.dateOnly(DateTime.now());
-    if(controller.historyTabValue.value==1) return _current.isAfter(mostRecentMonday(_current))&&_current.isBefore(findLastDateOfTheWeek(_current))||_current.isAtSameMomentAs(findLastDateOfTheWeek(_current))||_current.isAtSameMomentAs(mostRecentMonday(_current));
-    if(controller.historyTabValue.value==2) return _current.isAfter(findFirstDateOfTheMonth(_current))&&_current.isBefore(findLastDateOfTheMonth(_current));
+
+  bool _conditionHandler({required DateTime date}) {
+    final current = DateUtils.dateOnly(DateTime.now());
+    if (controller.historyTabValue.value == 1)
+      return current.isAfter(mostRecentMonday(current)) &&
+              current.isBefore(findLastDateOfTheWeek(current)) ||
+          current.isAtSameMomentAs(findLastDateOfTheWeek(current)) ||
+          current.isAtSameMomentAs(mostRecentMonday(current));
+    if (controller.historyTabValue.value == 2)
+      return current.isAfter(findFirstDateOfTheMonth(current)) &&
+          current.isBefore(findLastDateOfTheMonth(current));
     return true;
   }
-  int earnHandler(){
-    final _currentDay = DateUtils.dateOnly(DateTime.now());
-    List<OrderResponseModel> orders = controller.history.value.where((element){
-      if(controller.historyTabValue.value==0) return DateUtils.dateOnly(element.date_created!)==_currentDay;
-      if(controller.historyTabValue.value==1) return element.date_created!.isAfter(mostRecentMonday(_currentDay))&&element.date_created!.isBefore(findLastDateOfTheWeek(DateTime.now()))||element.date_created!.isAtSameMomentAs(findLastDateOfTheWeek(_currentDay))||element.date_created!.isAtSameMomentAs(mostRecentMonday(_currentDay));
-      if(controller.historyTabValue.value==2) return element.date_created!.isAfter(findFirstDateOfTheMonth(_currentDay))&&element.date_created!.isBefore(findLastDateOfTheMonth(DateTime.now()));
+
+  int earnHandler() {
+    final currentDay = DateUtils.dateOnly(DateTime.now());
+    List<OrderResponseModel> orders = controller.history.value.where((element) {
+      if (controller.historyTabValue.value == 0)
+        return DateUtils.dateOnly(element.date_created!) == currentDay;
+      if (controller.historyTabValue.value == 1)
+        return element.date_created!.isAfter(mostRecentMonday(currentDay)) &&
+                element.date_created!
+                    .isBefore(findLastDateOfTheWeek(DateTime.now())) ||
+            element.date_created!
+                .isAtSameMomentAs(findLastDateOfTheWeek(currentDay)) ||
+            element.date_created!
+                .isAtSameMomentAs(mostRecentMonday(currentDay));
+      if (controller.historyTabValue.value == 2)
+        return element.date_created!
+                .isAfter(findFirstDateOfTheMonth(currentDay)) &&
+            element.date_created!
+                .isBefore(findLastDateOfTheMonth(DateTime.now()));
       return false;
     }).toList();
-    var sum=0.0;
-    for(final order in orders)
-      sum+=order.total;
+    var sum = 0.0;
+    for (final order in orders) {
+      sum += order.total;
+    }
 
-    return (sum*0.1).toInt();
+    return (sum * 0.1).toInt();
   }
 
   DateTime mostRecentMonday(DateTime date) =>
@@ -226,7 +245,7 @@ class EarnAndHistoryScreen extends StatelessWidget {
   }
 
   DateTime findFirstDateOfTheMonth(DateTime dateTime) {
-    return DateTime(dateTime.year, dateTime.month, 1);
+    return DateTime(dateTime.year, dateTime.month);
   }
 }
 

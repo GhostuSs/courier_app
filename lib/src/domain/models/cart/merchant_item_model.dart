@@ -16,8 +16,7 @@ class CartModel {
   final double total;
   final String image;
 
-  static CartModel fromJson({required Map<String, dynamic> json}) =>
-      CartModel(
+  static CartModel fromJson({required Map<String, dynamic> json}) => CartModel(
         id: json['id'],
         name: json['name'],
         product_id: json['product_id'],

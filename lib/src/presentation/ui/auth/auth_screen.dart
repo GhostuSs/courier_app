@@ -17,7 +17,6 @@ class AuthScreen extends StatelessWidget {
           child: GetBuilder(
             init: controller,
             builder: (_) => Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
@@ -37,7 +36,7 @@ class AuthScreen extends StatelessWidget {
                       () => TextField(
                         cursorColor: AppColors.black,
                         obscureText: controller.obscurePass.value,
-                        obscuringCharacter: "*",
+                        obscuringCharacter: '*',
                         onChanged: (pass) => controller.onChange(pass: pass),
                         decoration: InputDecoration(
                             labelText: locale.yourPass,

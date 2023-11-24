@@ -12,7 +12,7 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: RawButton(
           label: locale.needHelp,
           onTap: () {},
@@ -39,15 +39,24 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 24),
             InkWell(
               child: InkWell(
-                onTap: ()=>Get.bottomSheet(Container(padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),child: ClipRRect(
-                  clipBehavior: Clip.hardEdge,
-                  borderRadius: BorderRadius.only(topRight: Radius.circular(10.r),topLeft: Radius.circular(10.r)),
-                  child: EarnAndHistoryScreen(),
-                ),),isScrollControlled: true,isDismissible: true),
+                onTap: () => Get.bottomSheet(
+                    Container(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).padding.top),
+                      child: ClipRRect(
+                        clipBehavior: Clip.hardEdge,
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(10.r),
+                            topLeft: Radius.circular(10.r)),
+                        child: const EarnAndHistoryScreen(),
+                      ),
+                    ),
+                    isScrollControlled: true,
+                    isDismissible: true),
                 borderRadius: BorderRadius.circular(10.r),
                 child: Container(
-                  padding: EdgeInsets.all(16),
-                  constraints: BoxConstraints.tightFor(
+                  padding: const EdgeInsets.all(16),
+                  constraints: const BoxConstraints.tightFor(
                     width: double.infinity,
                   ),
                   decoration: BoxDecoration(
@@ -64,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           const SizedBox(width: 16),
                           Text(
-                            "История заказов и доход",
+                            'История заказов и доход',
                             style: theme.textTheme.headlineMedium?.copyWith(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w700,

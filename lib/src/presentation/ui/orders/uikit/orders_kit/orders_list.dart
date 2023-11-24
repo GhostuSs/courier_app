@@ -16,44 +16,51 @@ class OrdersList extends StatelessWidget {
         child: Obx(
           () => Column(
             children: [
-              for(final status in controller.statuses.value)
+              for (final status in controller.statuses.value)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Text(
                         statusLabel(status: status),
-                        style: theme.textTheme.headlineMedium
-                            ?.copyWith(
+                        style: theme.textTheme.headlineMedium?.copyWith(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w700,
                           color: AppColors.black,
                         ),
                       ),
                     ),
-                    for (final order in controller.orders.value.where((el) => el.status==status))
-                      Padding(padding: EdgeInsets.only(bottom: 8),child: OrderCard(order: order),)
+                    for (final order in controller.orders.value
+                        .where((el) => el.status == status))
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: OrderCard(order: order),
+                      )
                   ],
                 ),
-            const SizedBox(height: 30),
+              const SizedBox(height: 30),
             ],
           ),
         ),
       ),
     );
   }
-  
-  String statusLabel({required String status}){
-    switch(status){
-      case OrderStatuses.preparing:return "Готовится";
-      case OrderStatuses.readyForCourier: return "Ожидает выдачи";
-      case OrderStatuses.done:return "Готов";
-      case OrderStatuses.completed:return "Выполнен";
-      case OrderStatuses.courier:return "Доставляется";
-      default: return 'Обрабатывается';
+
+  String statusLabel({required String status}) {
+    switch (status) {
+      case OrderStatuses.preparing:
+        return 'Готовится';
+      case OrderStatuses.readyForCourier:
+        return 'Ожидает выдачи';
+      case OrderStatuses.done:
+        return 'Готов';
+      case OrderStatuses.completed:
+        return 'Выполнен';
+      case OrderStatuses.courier:
+        return 'Доставляется';
+      default:
+        return 'Обрабатывается';
     }
   }
-  
-
 }

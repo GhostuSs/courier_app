@@ -14,7 +14,7 @@ class OrdersScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       body: RefreshIndicator(
-        onRefresh: ()=>controller.getOrders(),
+        onRefresh: () => controller.getOrders(),
         child: SafeArea(
           minimum: EdgeInsets.only(
             top: MediaQuery.of(context).padding.top,
@@ -25,28 +25,27 @@ class OrdersScreen extends StatelessWidget {
             init: controller,
             initState: (_) async => await controller.initialize(),
             builder: (_) => Obx(() => Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  locale.orders,
-                  style: theme.textTheme.displayMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                controller.loadingOrders.value
-                    ? Expanded(
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.red,
-                      ),
-                    ))
-                    :Expanded(
-                  child: controller.orders.value.isEmpty
-                      ? const EmptyOrder()
-                      : const OrdersList(),
-                )
-              ],
-            )),
+                  children: [
+                    Text(
+                      locale.orders,
+                      style: theme.textTheme.displayMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    controller.loadingOrders.value
+                        ? Expanded(
+                            child: Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.red,
+                            ),
+                          ))
+                        : Expanded(
+                            child: controller.orders.value.isEmpty
+                                ? const EmptyOrder()
+                                : const OrdersList(),
+                          )
+                  ],
+                )),
           ),
         ),
       ),

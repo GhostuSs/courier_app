@@ -4,11 +4,10 @@ class EmptyOrder extends StatelessWidget {
   const EmptyOrder({super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Assets.images.oh.svg(width: 56.w),
@@ -18,9 +17,9 @@ class EmptyOrder extends StatelessWidget {
         ),
         RichText(
             text: TextSpan(
-              text: 'Заказов пока нет',
-              style: theme.textTheme.displayMedium,
-            ))
+          text: 'Заказов пока нет',
+          style: theme.textTheme.displayMedium,
+        ))
       ],
     );
   }

@@ -60,9 +60,9 @@ class OrderResponseModel {
   Map<String, dynamic> toJson() {
     return {
       'status': status,
-      "total": total,
-      "date_paid": date_paid,
-      "id": id,
+      'total': total,
+      'date_paid': date_paid,
+      'id': id,
     };
   }
 
@@ -90,7 +90,6 @@ class OrderResponseModel {
 
   ///TODO: СДЕЛАЙ
   static DateTime _prepareDate(dynamic date) {
-    print(date);
     if (DateTime.tryParse(date) != null) {
       return DateTime.parse(date);
     } else {

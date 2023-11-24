@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 abstract class AppTheme {
-  static OutlineInputBorder _border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12.r),
-      borderSide: BorderSide(
-        color: AppColors.gray2,
-        width: 1,
-      ),
+  static final OutlineInputBorder _border = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(12.r),
+    borderSide: BorderSide(
+      color: AppColors.gray2,
+      width: 1,
+    ),
   );
-  static OutlineInputBorder _focusedBorder = OutlineInputBorder(
+  static final OutlineInputBorder _focusedBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(12.r),
     borderSide: BorderSide(
       color: AppColors.gray1,
       width: 2,
     ),
   );
-  static OutlineInputBorder _errorBorder = OutlineInputBorder(
+  static final OutlineInputBorder _errorBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(12.r),
     borderSide: BorderSide(
       color: AppColors.red,
@@ -26,29 +26,29 @@ abstract class AppTheme {
   );
 
   static ThemeData mainTheme = ThemeData(
-      fontFamily: 'Manrope',
-      textTheme: TextTheme(
-        displayLarge: _AppTypography.headline1,
-        displayMedium: _AppTypography.headline2,
-        displaySmall: _AppTypography.headline3,
-        headlineMedium: _AppTypography.headline4,
-        headlineSmall: _AppTypography.headline5,
-        titleLarge: _AppTypography.p4,
-        bodyLarge: _AppTypography.bodyLarge,
-        bodyMedium: _AppTypography.bodyMedium,
-        bodySmall: _AppTypography.bodySmall,
+    fontFamily: 'Manrope',
+    textTheme: TextTheme(
+      displayLarge: _AppTypography.headline1,
+      displayMedium: _AppTypography.headline2,
+      displaySmall: _AppTypography.headline3,
+      headlineMedium: _AppTypography.headline4,
+      headlineSmall: _AppTypography.headline5,
+      titleLarge: _AppTypography.p4,
+      bodyLarge: _AppTypography.bodyLarge,
+      bodyMedium: _AppTypography.bodyMedium,
+      bodySmall: _AppTypography.bodySmall,
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      labelStyle: _AppTypography.headline1.copyWith(
+        fontSize: 12.sp,
+        fontWeight: FontWeight.w400,
+        color: AppColors.gray1,
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        labelStyle: _AppTypography.headline1.copyWith(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w400,
-          color: AppColors.gray1,
-        ),
-        border: _border,
-        enabledBorder: _border,
-        focusedBorder: _focusedBorder,
-        errorBorder: _errorBorder,
-      ),
+      border: _border,
+      enabledBorder: _border,
+      focusedBorder: _focusedBorder,
+      errorBorder: _errorBorder,
+    ),
   );
 }
 
