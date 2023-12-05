@@ -1,5 +1,5 @@
 import 'package:courier_app/res/barrels/barrel.dart';
-import 'package:courier_app/src/domain/controllers/main_controller.dart';
+import 'package:courier_app/src/domain/controllers/main/main_controller.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});

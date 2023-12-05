@@ -16,8 +16,9 @@ class ApiService {
   static const _newordersKey = 'new';
   static Dio get _dio => getIt<Dio>();
 
-  static Future<AuthResponseModel?> login(
-      {required AuthRequestModel model}) async {
+  static Future<AuthResponseModel?> login({
+    required AuthRequestModel model,
+  }) async {
     try {
       final response = await _dio.get(dotenv.env['URL']! + ApiRoute.login,
           queryParameters: model.toJson());
@@ -116,5 +117,9 @@ class ApiService {
       print('/finish_order');
       print(e);
     }
+  }
+  
+  static Future getMe()async{
+    _dio.get(dotenv.env['URL']! + ApiRoute.deliverOrder,);
   }
 }

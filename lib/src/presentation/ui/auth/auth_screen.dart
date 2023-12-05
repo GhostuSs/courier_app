@@ -1,5 +1,5 @@
 import 'package:courier_app/res/barrels/barrel.dart';
-import 'package:courier_app/src/domain/controllers/auth_controller.dart';
+import 'package:courier_app/src/domain/controllers/auth/auth_controller.dart';
 import 'package:courier_app/src/presentation/uikit/raw_button.dart';
 
 class AuthScreen extends StatelessWidget {

@@ -45,6 +45,7 @@ class EarnAndHistoryScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: GetBuilder(
               init: controller,
+              autoRemove: false,
               initState: (_) => controller.getHistory(),
               builder: (_) {
                 return Obx(() => controller.loadingHistory.value

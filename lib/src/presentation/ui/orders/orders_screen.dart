@@ -23,6 +23,7 @@ class OrdersScreen extends StatelessWidget {
           ),
           child: GetBuilder(
             init: controller,
+            autoRemove: false,
             initState: (_) async => await controller.initialize(),
             builder: (_) => Obx(() => Column(
                   children: [

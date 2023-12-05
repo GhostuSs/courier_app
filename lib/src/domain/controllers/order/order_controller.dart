@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:courier_app/res/barrels/barrel.dart';
 import 'package:courier_app/src/domain/models/order/order_response_model.dart';
 import 'package:courier_app/src/domain/models/order/statuses/order_statuses_model.dart';
 import 'package:courier_app/src/domain/services/api/api_service.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class OrderController extends GetxController {
   RxList<OrderResponseModel> orders = <OrderResponseModel>[].obs;
@@ -11,18 +14,30 @@ class OrderController extends GetxController {
   RxBool loadingOrders = true.obs;
   RxBool loadingHistory = true.obs;
   RxInt historyTabValue = 0.obs;
+  late Timer timer;
   Rx<OrderResponseModel> selectedOrder = OrderResponseModel.empty().obs;
 
   Future<void> initialize() async {
     await getOrders();
     await getHistory();
+    final InternetConnection connection = InternetConnection();
+    timer = Timer.periodic(Duration(seconds:60),(_) async =>await connection.hasInternetAccess ? loadOrders() : null);
   }
 
   Future<void> getOrders() async {
+    print('get orders');
     loadingOrders.value = true;
     statuses.value = {};
     orders.value = [];
+    await loadOrders();
+    if (orders.isNotEmpty) selectedOrder.value = orders.value.first;
+    loadingOrders.value = false;
+  }
+
+  Future<void> loadOrders()async {
+    print('load');
     final orderData = await ApiService.getOrders() ?? [];
+    orders.clear();
     for (final order in orderData) {
       final orderModel = OrderResponseModel.fromJson(json: order);
       if (orderModel.status != OrderStatuses.completed &&
@@ -31,8 +46,6 @@ class OrderController extends GetxController {
         statuses.add(orderModel.status);
       }
     }
-    if (orders.isNotEmpty) selectedOrder.value = orders.value.first;
-    loadingOrders.value = false;
   }
 
   Future<void> getHistory() async {
@@ -72,5 +85,10 @@ class OrderController extends GetxController {
         await getOrders();
       }
     }
+  }
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 }

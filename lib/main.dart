@@ -1,8 +1,8 @@
 import 'package:courier_app/res/localization/l10n.dart';
 import 'package:courier_app/res/theme/themes.dart';
 import 'package:courier_app/src/di/di.dart';
-import 'package:courier_app/src/domain/controllers/auth_controller.dart';
-import 'package:courier_app/src/domain/controllers/main_controller.dart';
+import 'package:courier_app/src/domain/controllers/auth/auth_controller.dart';
+import 'package:courier_app/src/domain/controllers/main/main_controller.dart';
 import 'package:courier_app/src/domain/controllers/order/order_controller.dart';
 import 'package:courier_app/src/domain/services/secure_storage/secure_storage_service.dart';
 import 'package:courier_app/src/presentation/ui/loading/load_screen.dart';
