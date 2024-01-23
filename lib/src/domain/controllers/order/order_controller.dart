@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:courier_app/res/barrels/barrel.dart';
+import 'package:courier_app/src/di/di.dart';
 import 'package:courier_app/src/domain/models/order/order_response_model.dart';
 import 'package:courier_app/src/domain/models/order/statuses/order_statuses_model.dart';
 import 'package:courier_app/src/domain/services/api/api_service.dart';
@@ -15,6 +16,7 @@ class OrderController extends GetxController {
   RxBool loadingHistory = true.obs;
   RxInt historyTabValue = 0.obs;
   late Timer timer;
+  final _apiService = getIt<ApiService>();
   Rx<OrderResponseModel> selectedOrder = OrderResponseModel.empty().obs;
 
   Future<void> initialize() async {
@@ -36,7 +38,7 @@ class OrderController extends GetxController {
 
   Future<void> loadOrders()async {
     print('load');
-    final orderData = await ApiService.getOrders() ?? [];
+    final orderData = await _apiService.getOrders() ?? [];
     orders.clear();
     for (final order in orderData) {
       final orderModel = OrderResponseModel.fromJson(json: order);
@@ -51,7 +53,7 @@ class OrderController extends GetxController {
   Future<void> getHistory() async {
     loadingHistory.value = true;
     history.value = [];
-    final historyData = await ApiService.getHistory() ?? [];
+    final historyData = await _apiService.getHistory() ?? [];
     for (final order in historyData) {
       final orderModel = OrderResponseModel.fromJson(json: order);
       print(orderModel.status);
@@ -73,13 +75,13 @@ class OrderController extends GetxController {
 
   Future<void> handleOrderStatus() async {
     if (selectedOrder.value.status != OrderStatuses.courier) {
-      if (await ApiService.acceptOrder(order_id: selectedOrder.value.id) ==
+      if (await _apiService.acceptOrder(order_id: selectedOrder.value.id) ==
           true) {
         selectedOrder.value.status = OrderStatuses.courier;
         await getOrders();
       }
     } else {
-      if (await ApiService.deliverOrder(order_id: selectedOrder.value.id) ==
+      if (await _apiService.deliverOrder(order_id: selectedOrder.value.id) ==
           true) {
         selectedOrder.value.status = OrderStatuses.completed;
         await getOrders();

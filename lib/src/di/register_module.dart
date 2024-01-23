@@ -11,4 +11,5 @@ abstract class RegisterModule {
 
   @singleton
   FlutterSecureStorage get storage => const FlutterSecureStorage();
+
 }

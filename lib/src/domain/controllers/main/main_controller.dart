@@ -1,3 +1,4 @@
+import 'package:courier_app/src/di/di.dart';
 import 'package:courier_app/src/domain/services/api/api_service.dart';
 import 'package:courier_app/src/presentation/ui/orders/orders_screen.dart';
 import 'package:courier_app/src/presentation/ui/profile/profile_screen.dart';
@@ -13,6 +14,6 @@ class MainController extends GetxController {
   void changeIndex({required int index}) => currIndex.value = index;
 
   Future<void> initialize() async {
-    await ApiService.getOrders();
+    await getIt<ApiService>().getOrders();
   }
 }

@@ -16,12 +16,14 @@ class OrderCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(10.r),
       onTap: () {
         controller.selectOrder(order: order);
-        Get.bottomSheet(const OrderInfo(),
-            isScrollControlled: true, ignoreSafeArea: false);
+        Get.bottomSheet(
+          const OrderInfo(),
+          isScrollControlled: true,
+          ignoreSafeArea: false,
+        );
       },
       child: Container(
-        decoration: BoxDecoration(
-            color: AppColors.gray3, borderRadius: BorderRadius.circular(10.r)),
+        decoration: BoxDecoration(color: AppColors.gray3, borderRadius: BorderRadius.circular(10.r)),
         padding: const EdgeInsets.all(16),
         constraints: const BoxConstraints.tightFor(width: double.infinity),
         child: Column(
@@ -36,18 +38,12 @@ class OrderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      DateFormat('dd MMMM yyyy г. в hh:mm')
-                          .format(order.date_created!),
+                      DateFormat('dd MMMM yyyy г. в hh:mm').format(order.date_created!),
                       style: theme.textTheme.headline2?.copyWith(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.black,
-                          letterSpacing: -0.06),
+                          fontSize: 16.sp, fontWeight: FontWeight.w700, color: AppColors.black, letterSpacing: -0.06),
                     ),
                     Text(
-                      '${order.lineItems.length} блюда на ' +
-                          (order.total).toInt().toString() +
-                          '₽',
+                      '${order.lineItems.length} блюда на ' + (order.total).toInt().toString() + '₽',
                       style: theme.textTheme.headline2?.copyWith(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,

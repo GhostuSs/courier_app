@@ -1,4 +1,6 @@
 import 'package:courier_app/res/barrels/barrel.dart';
+import 'package:courier_app/src/domain/services/secure_storage/secure_storage_service.dart';
+import 'package:courier_app/src/presentation/ui/auth/auth_screen.dart';
 import 'package:courier_app/src/presentation/ui/orders/uikit/earn_and_history_screen.dart';
 import 'package:courier_app/src/presentation/uikit/raw_button.dart';
 
@@ -31,10 +33,20 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              locale.profile,
-              style: theme.textTheme.displayMedium,
-              textAlign: TextAlign.center,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(width: 24,),
+                Text(
+                  locale.profile,
+                  style: theme.textTheme.displayMedium,
+                  textAlign: TextAlign.center,
+                ),
+                InkWell(
+                  onTap: _logout,
+                  child: Icon(Icons.exit_to_app,color: AppColors.black,size: 24,),
+                )
+              ],
             ),
             const SizedBox(height: 24),
             InkWell(
@@ -95,5 +107,10 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _logout(){
+    SecureStorage.clearData();
+    Get.to(const AuthScreen());
   }
 }

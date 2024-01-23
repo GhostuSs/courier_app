@@ -16,55 +16,66 @@ class AuthScreen extends StatelessWidget {
               vertical: MediaQuery.of(context).padding.top, horizontal: 16.w),
           child: GetBuilder(
             init: controller,
-            builder: (_) => Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      locale.auth,
-                      style: theme.textTheme.displayMedium,
+            builder: (_) => Obx(() => controller.authorizing.value
+                ? Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.red,
                     ),
-                    const SizedBox(height: 24),
-                    TextField(
-                      cursorColor: AppColors.black,
-                      onChanged: (value) => controller.onChange(login: value),
-                      decoration: InputDecoration(labelText: locale.yourEmail),
-                    ),
-                    const SizedBox(height: 24),
-                    Obx(
-                      () => TextField(
-                        cursorColor: AppColors.black,
-                        obscureText: controller.obscurePass.value,
-                        obscuringCharacter: '*',
-                        onChanged: (pass) => controller.onChange(pass: pass),
-                        decoration: InputDecoration(
-                            labelText: locale.yourPass,
-                            suffixIconColor: AppColors.gray1,
-                            suffixIconConstraints:
-                                BoxConstraints.tightFor(width: 40.w),
-                            suffixIcon: InkWell(
-                                focusColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                splashColor: Colors.transparent,
-                                onTap: () => controller.changeObscuring(),
-                                child: Icon(controller.obscurePass.value
-                                    ? Icons.visibility
-                                    : Icons.visibility_off))),
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            locale.auth,
+                            style: theme.textTheme.displayMedium,
+                          ),
+                          const SizedBox(height: 24),
+                          TextField(
+                            cursorColor: AppColors.black,
+                            onChanged: (value) =>
+                                controller.onChange(login: value),
+                            decoration:
+                                InputDecoration(labelText: locale.yourEmail),
+                          ),
+                          const SizedBox(height: 24),
+                          Obx(
+                            () => TextField(
+                              cursorColor: AppColors.black,
+                              obscureText: controller.obscurePass.value,
+                              obscuringCharacter: '*',
+                              onChanged: (pass) =>
+                                  controller.onChange(pass: pass),
+                              decoration: InputDecoration(
+                                labelText: locale.yourPass,
+                                suffixIconColor: AppColors.gray1,
+                                suffixIconConstraints:
+                                    BoxConstraints.tightFor(width: 40.w),
+                                suffixIcon: InkWell(
+                                  focusColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                  onTap: () => controller.changeObscuring(),
+                                  child: Icon(controller.obscurePass.value
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-                Obx(
-                  () => RawButton(
-                    label: locale.login,
-                    onTap: () => controller.authorize(),
-                    active: controller.entryEnabled.value,
-                  ),
-                ),
-              ],
-            ),
+                      Obx(
+                        () => RawButton(
+                          label: locale.login,
+                          onTap: () => controller.authorize(),
+                          active: controller.entryEnabled.value,
+                        ),
+                      ),
+                    ],
+                  )),
           ),
         ),
       ),

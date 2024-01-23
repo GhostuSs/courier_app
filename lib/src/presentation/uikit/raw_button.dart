@@ -6,13 +6,14 @@ class RawButton extends StatelessWidget {
   final bool active;
   final Color? customColor;
   final bool? invertTextColor;
+  final Widget? widget;
   const RawButton(
       {super.key,
       required this.label,
       required this.onTap,
       required this.active,
       this.customColor,
-      this.invertTextColor});
+      this.invertTextColor, this.widget});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class RawButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.r),
           color: customColor ?? (active ? AppColors.red : AppColors.redFocus),
         ),
-        child: Row(
+        child: widget??Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(

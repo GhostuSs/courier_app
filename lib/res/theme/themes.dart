@@ -116,10 +116,4 @@ class _AppTypography {
     fontFamily: _fontFam,
     color: AppColors.black,
   );
-  static TextStyle caption = TextStyle(
-    fontSize: 12.sp,
-    letterSpacing: _letterSpacing,
-    fontFamily: _fontFam,
-    color: AppColors.black,
-  );
 }
