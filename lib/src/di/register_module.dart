@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:courier_app/src/domain/services/secure_storage/secure_storage_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -11,5 +12,8 @@ abstract class RegisterModule {
 
   @singleton
   FlutterSecureStorage get storage => const FlutterSecureStorage();
+
+  @singleton
+  AwesomeNotifications get notificationService => AwesomeNotifications();
 
 }

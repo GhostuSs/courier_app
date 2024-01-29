@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:courier_app/res/localization/l10n.dart';
 import 'package:courier_app/res/theme/themes.dart';
 import 'package:courier_app/src/di/di.dart';
@@ -22,6 +23,13 @@ import 'package:injectable/injectable.dart';
 Future<void> main() async {
   await dotenv.load(fileName: 'config.env');
   await configureDependencies(Environment.prod);
+  getIt<AwesomeNotifications>().initialize(null, [
+    NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+        )
+  ]);
   await SecureStorage.getToken();
   _initFirebase();
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 90));
@@ -32,6 +40,14 @@ Future<void> main() async {
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
+  getIt<AwesomeNotifications>().initialize(null, [
+    NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+    )
+  ]);
+  getIt<AwesomeNotifications>().createNotificationFromJsonData(message.data);
   log('Handling a background message ${message.messageId}');
 }
 
@@ -69,14 +85,10 @@ class App extends StatelessWidget {
 Future<void> _initFirebase() async {
   try {
     await Firebase.initializeApp();
+    AwesomeNotifications().requestPermissionToSendNotifications();
+    FirebaseMessaging.instance.requestPermission(alert: true, announcement: true, carPlay: true, criticalAlert: true);
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    FirebaseMessaging.instance.requestPermission(
-        alert: true,
-        announcement: true,
-        carPlay: true,
-        criticalAlert: true
-    );
-  } on Exception catch(e){
+  } on Exception catch (e) {
     log(e.toString());
   }
 }

@@ -1,3 +1,4 @@
+import 'package:courier_app/src/domain/services/api/api_service.dart';
 import 'package:courier_app/src/domain/services/geo/geo_service.dart';
 import 'package:courier_app/src/domain/services/secure_storage/secure_storage_service.dart';
 import 'package:courier_app/src/presentation/ui/auth/auth_screen.dart';

@@ -46,7 +46,6 @@ class OrderResponseModel {
     double? lat;
     double? long;
     final billing = json['billing'];
-    log(json.toString());
     json['meta_data'].map((e) {
       if (e['key'] == 'lat') {
         lat = double.tryParse(e['value']);
