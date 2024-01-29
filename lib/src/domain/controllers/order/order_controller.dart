@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:courier_app/res/barrels/barrel.dart';
 import 'package:courier_app/src/di/di.dart';
 import 'package:courier_app/src/domain/enums/orders_filter.dart';
-import 'package:courier_app/src/domain/models/eranings/eranings_response_model.dart';
+import 'package:courier_app/src/domain/models/earnings/eranings_response_model.dart';
 import 'package:courier_app/src/domain/models/order/order_response_model.dart';
 import 'package:courier_app/src/domain/models/order/statuses/order_statuses_model.dart';
 import 'package:courier_app/src/domain/services/api/api_service.dart';
@@ -13,7 +13,6 @@ class OrderController extends GetxController {
   RxList<OrderResponseModel> orders = <OrderResponseModel>[].obs;
   RxList<OrderResponseModel> history = <OrderResponseModel>[].obs;
   RxList<EarningResponseModel> orderEarnings = <EarningResponseModel>[].obs;
-  RxSet<DateTime> historyPeriods = <DateTime>{}.obs;
   RxSet<String> statuses = <String>{}.obs;
   RxBool loadingOrders = true.obs;
   RxBool loadingHistory = true.obs;
@@ -41,7 +40,6 @@ class OrderController extends GetxController {
     print('get orders');
     loadingOrders.value = true;
     statuses.value = {};
-    _apiService.getEarnings();
     orders.value = [];
     await loadOrders();
     if (orders.isNotEmpty) selectedOrder.value = orders.value.first;
@@ -57,6 +55,7 @@ class OrderController extends GetxController {
         orders.value.add(orderModel);
         statuses.add(orderModel.status);
       }
+      orders.toSet().toList();
     }
   }
 
@@ -65,18 +64,19 @@ class OrderController extends GetxController {
     history.value = [];
     final historyData = await _apiService.getHistory() ?? [];
     await getOrderEarnings();
-    for (final order in historyData) {
+    for (final order in historyData.toSet()) {
       final orderModel = OrderResponseModel.fromJson(json: order);
       if (orderModel.status == OrderStatuses.completed) {
         history.value.add(orderModel);
-        if (orderModel.date_created != null) historyPeriods.add(DateUtils.dateOnly(orderModel.date_created!));
       }
     }
+    history.toSet().toList();
     loadingHistory.value = false;
   }
 
   int selectPeriod({required int value}) {
-    filter.value = value.fromIntToEnum(value: value ?? 0);
+    filter.value = value.fromIntToEnum(value: value);
+    currentDate.value = DateUtils.dateOnly(DateTime.now());
     return historyTabValue.value = value;
   }
 
@@ -99,8 +99,36 @@ class OrderController extends GetxController {
   Future<void> getOrderEarnings() async {
     orderEarnings.value = [];
     final earningsData = await _apiService.getEarnings() ?? [];
-    orderEarnings.value = earningsData;
+    orderEarnings.value = earningsData.toList();
   }
+
+  void previousPeriod(){
+    if(filter.value == OrdersFilter.day){
+      currentDate.value = currentDate.value.subtract(Duration(days: 1));
+  }else{
+      if(filter.value==OrdersFilter.month){
+        currentDate.value=DateTime(currentDate.value.year, currentDate.value.month-1, currentDate.value.day);
+      }else{
+        if(filter.value==OrdersFilter.week){
+          currentDate.value=currentDate.value.subtract(Duration(days: 7));
+        }
+      }
+    }
+    }
+
+    void nextPeriod(){
+    if(filter.value == OrdersFilter.day){
+      currentDate.value = currentDate.value.add(Duration(days: 1));
+    }else{
+      if(filter.value==OrdersFilter.month){
+        currentDate.value=DateTime(currentDate.value.year, currentDate.value.month+1, currentDate.value.day);
+      }else{
+        if(filter.value==OrdersFilter.week){
+          currentDate.value=currentDate.value.add(Duration(days: 7));
+        }
+      }
+    }
+    }
 
   @override
   void dispose() {

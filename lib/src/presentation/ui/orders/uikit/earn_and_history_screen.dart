@@ -1,6 +1,6 @@
 import 'package:courier_app/res/barrels/barrel.dart';
 import 'package:courier_app/src/domain/controllers/order/order_controller.dart';
-import 'package:courier_app/src/domain/models/order/order_response_model.dart';
+import 'package:courier_app/src/domain/models/earnings/eranings_response_model.dart';
 import 'package:courier_app/src/presentation/ui/orders/uikit/orders_kit/order_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -46,7 +46,7 @@ class EarnAndHistoryScreen extends StatelessWidget {
             child: GetBuilder(
               init: controller,
               autoRemove: false,
-              initState: (_) => controller.getHistory(),
+              initState: (_) async => await controller.getHistory(),
               builder: (_) {
                 return Obx(() => controller.loadingHistory.value
                     ? Column(
@@ -86,38 +86,53 @@ class EarnAndHistoryScreen extends StatelessWidget {
                                   chosen: controller.historyTabValue.value == 2,
                                 ),
                               },
-                              onValueChanged: (value) =>
-                                  controller.selectPeriod(value: value ?? 0),
+                              onValueChanged: (value) => controller.selectPeriod(value: value ?? 0),
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.only(top: 27, bottom: 10),
+                            padding: const EdgeInsets.only(top: 17),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.arrow_back_ios_new_rounded,
-                                  color: AppColors.red,
-                                  size: 16.sp,
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () => controller.previousPeriod(),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                                    child: Icon(
+                                      Icons.arrow_back_ios_new_rounded,
+                                      color: AppColors.red,
+                                      size: 18.sp,
+                                    ),
+                                  ),
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8),
                                   child: Text(
                                     _dateSelector(),
-                                    style: theme.textTheme.headlineMedium
-                                        ?.copyWith(
+                                    style: theme.textTheme.headlineMedium?.copyWith(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.red,
                                     ),
                                   ),
                                 ),
-                                Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  color: AppColors.red,
-                                  size: 16.sp,
-                                ),
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () => controller.nextPeriod(),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: AppColors.red,
+                                      size: 18.sp,
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),
@@ -126,42 +141,34 @@ class EarnAndHistoryScreen extends StatelessWidget {
                             children: [
                               Text(
                                 '${earnHandler()}' ' ₽',
-                                style: theme.textTheme.headlineMedium?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 36.sp,
-                                    color: AppColors.black),
+                                style: theme.textTheme.headlineMedium
+                                    ?.copyWith(fontWeight: FontWeight.w700, fontSize: 36.sp, color: AppColors.black),
                               )
                             ],
                           ),
                           Column(
                             children: [
-                              for (final day in controller.historyPeriods.value
-                                  .where((element) =>
-                                      _conditionHandler(date: element)))
+                              for (final EarningResponseModel eDay in controller.orderEarnings.value
+                                  .where((element) => _conditionHandler(date: element.date)))
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 16),
+                                        vertical: 16,
+                                      ),
                                       child: Text(
-                                        DateFormat('dd MMMM').format(day),
-                                        style: theme.textTheme.headlineMedium
-                                            ?.copyWith(
+                                        DateFormat('dd MMMM').format(eDay.date),
+                                        style: theme.textTheme.headlineMedium?.copyWith(
                                           fontSize: 20.sp,
                                           fontWeight: FontWeight.w700,
                                           color: AppColors.black,
                                         ),
                                       ),
                                     ),
-                                    for (final data in controller.history.value
-                                        .where((element) =>
-                                            DateUtils.dateOnly(
-                                                element.date_created!) ==
-                                            DateUtils.dateOnly(day)))
+                                    for (final data in eDay.orders)
                                       Container(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 8),
+                                        padding: const EdgeInsets.only(bottom: 8),
                                         child: OrderCard(
                                           order: data,
                                         ),
@@ -171,7 +178,8 @@ class EarnAndHistoryScreen extends StatelessWidget {
                             ],
                           ),
                         ],
-                      ));
+                      )
+                );
               },
             ),
           )),
@@ -179,7 +187,7 @@ class EarnAndHistoryScreen extends StatelessWidget {
   }
 
   String _dateSelector() {
-    final dateTime = DateTime.now();
+    final dateTime = controller.currentDate.value;
     final formatter = DateFormat('dd MMMM');
     switch (controller.historyTabValue.value) {
       case 0:
@@ -194,51 +202,33 @@ class EarnAndHistoryScreen extends StatelessWidget {
   }
 
   bool _conditionHandler({required DateTime date}) {
-    final current = DateUtils.dateOnly(DateTime.now());
+    print(controller.currentDate.value);
+    final current = DateUtils.dateOnly(controller.currentDate.value);
+    if (controller.historyTabValue.value == 0) {
+      return DateUtils.dateOnly(date).isAtSameMomentAs(controller.currentDate.value);
+    }
     if (controller.historyTabValue.value == 1)
-      return current.isAfter(mostRecentMonday(current)) &&
-              current.isBefore(findLastDateOfTheWeek(current)) ||
-          current.isAtSameMomentAs(findLastDateOfTheWeek(current)) ||
-          current.isAtSameMomentAs(mostRecentMonday(current));
+      return date.isAfter(mostRecentMonday(current)) && date.isBefore(findLastDateOfTheWeek(current)) ||
+          (date.isAtSameMomentAs(findLastDateOfTheWeek(current)) || date.isAtSameMomentAs(mostRecentMonday(current)));
     if (controller.historyTabValue.value == 2)
-      return current.isAfter(findFirstDateOfTheMonth(current)) &&
-          current.isBefore(findLastDateOfTheMonth(current));
-    return true;
+      return date.isAfter(findFirstDateOfTheMonth(current)) && date.isBefore(findLastDateOfTheMonth(current));
+    return false;
   }
 
   int earnHandler() {
-    final currentDay = DateUtils.dateOnly(DateTime.now());
-    List<OrderResponseModel> orders = controller.history.value.where((element) {
-      if (controller.historyTabValue.value == 0)
-        return DateUtils.dateOnly(element.date_created!) == currentDay;
-      if (controller.historyTabValue.value == 1)
-        return element.date_created!.isAfter(mostRecentMonday(currentDay)) &&
-                element.date_created!
-                    .isBefore(findLastDateOfTheWeek(DateTime.now())) ||
-            element.date_created!
-                .isAtSameMomentAs(findLastDateOfTheWeek(currentDay)) ||
-            element.date_created!
-                .isAtSameMomentAs(mostRecentMonday(currentDay));
-      if (controller.historyTabValue.value == 2)
-        return element.date_created!
-                .isAfter(findFirstDateOfTheMonth(currentDay)) &&
-            element.date_created!
-                .isBefore(findLastDateOfTheMonth(DateTime.now()));
-      return false;
-    }).toList();
+    List<EarningResponseModel> eDays =
+        controller.orderEarnings.value.where((element) => _conditionHandler(date: element.date) == true).toList();
     var sum = 0.0;
-    for (final order in orders) {
-      sum += order.total;
+    for (final EarningResponseModel eDay in eDays) {
+      sum += eDay.total;
     }
 
-    return (sum * 0.1).toInt();
+    return sum.toInt();
   }
 
-  DateTime mostRecentMonday(DateTime date) =>
-      DateTime(date.year, date.month, date.day - (date.weekday - 1));
+  DateTime mostRecentMonday(DateTime date) => DateTime(date.year, date.month, date.day - (date.weekday - 1));
   DateTime findLastDateOfTheWeek(DateTime dateTime) {
-    return dateTime
-        .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday));
+    return dateTime.add(Duration(days: DateTime.daysPerWeek - dateTime.weekday));
   }
 
   DateTime findLastDateOfTheMonth(DateTime dateTime) {

@@ -35,7 +35,8 @@ class OrdersList extends StatelessWidget {
                         .where((el) => el.status == status))
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8),
-                        child: OrderCard(order: order),
+                        child:
+                        OrderCardFull(order: order),
                       )
                   ],
                 ),

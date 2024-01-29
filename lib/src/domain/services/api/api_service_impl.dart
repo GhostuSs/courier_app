@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:developer';
-import 'package:collection/collection.dart';
 import 'package:courier_app/res/barrels/barrel.dart';
 import 'package:courier_app/res/config/api_routes.dart';
 import 'package:courier_app/src/di/di.dart';
 import 'package:courier_app/src/domain/models/auth/auth_request_model/auth_request_model.dart';
 import 'package:courier_app/src/domain/models/auth/auth_response_model/auth_response_model.dart';
-import 'package:courier_app/src/domain/models/eranings/eranings_response_model.dart';
+import 'package:courier_app/src/domain/models/earnings/eranings_response_model.dart';
 import 'package:courier_app/src/domain/models/order/short_order_response_model/short_order_response_model.dart';
 import 'package:courier_app/src/domain/services/secure_storage/secure_storage_service.dart';
 import 'package:courier_app/src/presentation/ui/auth/auth_screen.dart';
@@ -138,19 +136,15 @@ class ApiServiceImpl extends ApiService {
   @override
   Future<List<EarningResponseModel>?> getEarnings() async {
     try {
-      log('Get earnings');
-      _dio.get(
+      final response = await _dio.get(
         dotenv.env['URL']! + ApiRoute.earnings,
         queryParameters: {
           'token': SecureStorage.preloadedToken,
         },
-      ).then((response) {
-        print(response.data);
-        List<EarningResponseModel> list = _convertToList(json: response.data);
-        log("GOT EARNINGS");
-        print(list.length);
-        return list;
-      });
+      );
+      print(response.data);
+      List<EarningResponseModel> list = _convertToList(json: response.data);
+      return list;
     } on Exception catch (e) {
       print('/getEarnings');
       debugPrint(e.toString());
@@ -167,7 +161,7 @@ class ApiServiceImpl extends ApiService {
       final ordersList = orders.map((e) => ShortOrderResponseModel.fromJson(json: e)).toList();
       final total = double.tryParse(value.value['total']) ?? 0;
       final earning = EarningResponseModel(
-        date: date,
+        date: DateTime.parse(date),
         orders: ordersList,
         total: total,
       );
