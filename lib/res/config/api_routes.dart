@@ -4,4 +4,5 @@ abstract class ApiRoute {
   static const String acceptOrder = '/courier/take_order';
   static const String deliverOrder = '/courier/finish_order';
   static const String earnings = '/courier/payments';
+  static const String saveFcmToken = '/courier/fcm_token';
 }

@@ -23,17 +23,14 @@ class MainScreen extends StatelessWidget {
               items: [
                 BottomNavigationBarItem(
                   icon: Assets.images.ordersTab.svg(
-                      color: controller.currIndex.value == 0
-                          ? AppColors.black
-                          : AppColors.gray1,
-                      width: 24.w),
+                    color: controller.currIndex.value == 0 ? AppColors.black : AppColors.gray1,
+                    width: 24.w,
+                  ),
                   label: 'Заказы',
                 ),
                 BottomNavigationBarItem(
                   icon: Assets.images.profileTab.svg(
-                    color: controller.currIndex.value == 1
-                        ? AppColors.black
-                        : AppColors.gray1,
+                    color: controller.currIndex.value == 1 ? AppColors.black : AppColors.gray1,
                     width: 24.w,
                   ),
                   label: 'Профиль',

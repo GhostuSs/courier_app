@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:courier_app/res/barrels/barrel.dart';
 import 'package:courier_app/res/config/api_routes.dart';
 import 'package:courier_app/src/di/di.dart';
@@ -142,7 +143,6 @@ class ApiServiceImpl extends ApiService {
           'token': SecureStorage.preloadedToken,
         },
       );
-      print(response.data);
       List<EarningResponseModel> list = _convertToList(json: response.data);
       return list;
     } on Exception catch (e) {
@@ -168,5 +168,18 @@ class ApiServiceImpl extends ApiService {
       earningList.add(earning);
     }
     return earningList;
+  }
+
+  @override
+  Future<void> saveToken({required String token}) async {
+    try {
+      await _dio.post(dotenv.env['URL']! + ApiRoute.saveFcmToken, queryParameters: {
+        "token": SecureStorage.preloadedToken,
+        "fcm_token": token,
+      });
+    } on DioException catch (e) {
+      print('/token');
+      log(e.toString());
+    }
   }
 }

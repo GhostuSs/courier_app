@@ -15,4 +15,6 @@ abstract class ApiService {
   Future getMe();
 
   Future<List<EarningResponseModel>?> getEarnings();
+
+  Future<void> saveToken({required String token});
 }

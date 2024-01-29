@@ -87,6 +87,7 @@ Future<void> _initFirebase() async {
     await Firebase.initializeApp();
     AwesomeNotifications().requestPermissionToSendNotifications();
     FirebaseMessaging.instance.requestPermission(alert: true, announcement: true, carPlay: true, criticalAlert: true);
+
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   } on Exception catch (e) {
     log(e.toString());
