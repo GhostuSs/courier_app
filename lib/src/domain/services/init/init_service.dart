@@ -15,7 +15,7 @@ abstract class InitService {
         InternetConnection.createInstance();
     if (await internetConnectionChecker.hasInternetAccess) {
       final _token = await SecureStorage.getToken();
-      final _haveAccess = _token?.isNotEmpty == true;
+      final _haveAccess = _token.isNotEmpty == true;
       if (_haveAccess) {
         Get.to(const MainScreen());
         GeoService.determinePosition();

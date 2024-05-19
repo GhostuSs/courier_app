@@ -7,11 +7,12 @@ abstract class SecureStorage {
 
   static FlutterSecureStorage get storage => const FlutterSecureStorage();
 
-  static Future<String?> getToken() async {
+  static Future<String> getToken() async {
     try {
       await storage.read(key: _tokenKey).then(
               (value) => preloadedToken = value);
-    } on Exception catch (e) {
+      return preloadedToken??'';
+    } on Exception {
       return '';
     }
   }
