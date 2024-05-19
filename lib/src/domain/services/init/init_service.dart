@@ -23,8 +23,12 @@ abstract class InitService {
         SecureStorage.clearData();
         Get.to(const AuthScreen());
       }
-      final value = await FirebaseMessaging.instance.getToken();
-     if(value!=null)getIt<ApiService>().saveToken(token: value);
+      try{
+        final value = await FirebaseMessaging.instance.getToken();
+        if(value!=null)getIt<ApiService>().saveToken(token: value);
+      }on Exception catch (e){
+        print(e);
+      }
     } else {
       Get.to(const ErrorScreen(type: ErrorType.noInternet));
     }

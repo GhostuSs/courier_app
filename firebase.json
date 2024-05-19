@@ -1,0 +1,30 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "melnica-couriers",
+          "appId": "1:1023542134165:android:7e3d53c58f9b590c30a29c",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "melnica-couriers",
+          "appId": "1:1023542134165:ios:22fedefaabc2935530a29c",
+          "uploadDebugSymbols": true,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "melnica-couriers",
+          "configurations": {
+            "android": "1:1023542134165:android:7e3d53c58f9b590c30a29c",
+            "ios": "1:1023542134165:ios:22fedefaabc2935530a29c"
+          }
+        }
+      }
+    }
+  }
+}

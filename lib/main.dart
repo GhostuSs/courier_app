@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:courier_app/firebase_options.dart';
 import 'package:courier_app/res/localization/l10n.dart';
 import 'package:courier_app/res/theme/themes.dart';
 import 'package:courier_app/src/di/di.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: 'config.env');
@@ -35,11 +37,24 @@ Future<void> main() async {
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 90));
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(const App());
+  await SentryFlutter.init(
+        (options) {
+
+      options.dsn = 'https://bec84eb3f54035926afa8a1fde2e7f24@o4506711726161920.ingest.us.sentry.io/4507282639945728';
+      options
+          ..tracesSampleRate = 1.0
+          ..reportSilentFlutterErrors = true
+          ..reportPackages = true
+          ..enableAutoSessionTracking = true
+          ..enableTracing = true
+          ..enableNativeCrashHandling = true;
+    },
+    appRunner: () => runApp(App()),
+  );
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   getIt<AwesomeNotifications>().initialize(null, [
     NotificationChannel(
         channelKey: 'basic_channel',
@@ -84,7 +99,7 @@ class App extends StatelessWidget {
 
 Future<void> _initFirebase() async {
   try {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     AwesomeNotifications().requestPermissionToSendNotifications();
     FirebaseMessaging.instance.requestPermission(alert: true, announcement: true, carPlay: true, criticalAlert: true);
 

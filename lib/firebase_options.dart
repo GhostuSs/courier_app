@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'melnica-couriers.appspot.com',
     iosBundleId: 'ru.dolinger.sushipizzaCourier',
   );
+
 }
