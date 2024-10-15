@@ -25,13 +25,20 @@ class AuthController extends GetxController {
   Future<void> authorize() async {
     if (login.value.isEmpty || pass.value.isEmpty) return;
     authorizing.value = true;
-    final model = AuthRequestModel(email: login.value, password: pass.value);
+    final model = AuthRequestModel(
+      email: login.value,
+      password: pass.value,
+    );
     try {
       final loginData = await getIt<ApiService>().login(model: model) ?? null;
       if (loginData != null) {
         await SecureStorage.putToken(responseModel: loginData);
         await SecureStorage.getToken();
-        Future.delayed(const Duration(milliseconds: 500)).then(
+        Future.delayed(
+          const Duration(
+            milliseconds: 500,
+          ),
+        ).then(
           (value) => Get.to(
             const MainScreen(),
           ),

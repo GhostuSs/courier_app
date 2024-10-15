@@ -80,7 +80,7 @@ class App extends StatelessWidget {
   BindingsBuilder _bindings() => BindingsBuilder(() {
         Get
           ..lazyPut(OrderController.new, fenix: true)
-          ..lazyPut(AuthController.new, fenix: true)
+          ..lazyPut(AuthController.new, fenix: true,)
           ..lazyPut(MainController.new, fenix: true);
       });
 }
