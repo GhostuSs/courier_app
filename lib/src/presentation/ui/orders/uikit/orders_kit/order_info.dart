@@ -58,7 +58,7 @@ class OrderInfo extends StatelessWidget {
                                               if (controller.selectedOrder.value.status == OrderStatuses.completed) {
                                                 Get.dialog(OrderDelivered(number: controller.selectedOrder.value.id))
                                                     .then(
-                                                  (value) =>Get.back(),
+                                                  (value) => Get.back(),
                                                 );
                                               }
                                             },
@@ -157,7 +157,7 @@ class OrderInfo extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
-                                        width: 258.w,
+                                        width: 238.w,
                                         child: RichText(
                                           text: TextSpan(
                                             text: controller.selectedOrder.value.address_1 ??
@@ -176,7 +176,22 @@ class OrderInfo extends StatelessWidget {
                                             ? launchUrl(Uri.parse(
                                                 "https://maps.yandex.ru/?pt=${controller.selectedOrder.value.longtitude},${controller.selectedOrder.value.latitude}&z=18&l=map"))
                                             : print('-'),
-                                        child: Assets.images.location.svg(width: 24.sp),
+                                        child: SizedBox(
+                                          width: 70.w,
+                                          child: Column(
+                                            children: [
+                                              Assets.images.location.svg(width: 24.sp),
+                                              RichText(
+                                                text: TextSpan(
+                                                  text: "Открыть\nЯ.Карты",
+                                                  style: theme.textTheme.headlineSmall?.copyWith(
+                                                    color: AppColors.red,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
