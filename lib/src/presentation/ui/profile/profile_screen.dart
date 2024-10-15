@@ -2,7 +2,6 @@ import 'package:courier_app/res/barrels/barrel.dart';
 import 'package:courier_app/src/domain/services/secure_storage/secure_storage_service.dart';
 import 'package:courier_app/src/presentation/ui/auth/auth_screen.dart';
 import 'package:courier_app/src/presentation/ui/orders/uikit/earn_and_history_screen.dart';
-import 'package:courier_app/src/presentation/uikit/raw_button.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -13,17 +12,17 @@ class ProfileScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(16),
-        child: RawButton(
-          label: locale.needHelp,
-          onTap: () {},
-          active: true,
-          customColor: AppColors.gray2,
-          invertTextColor: true,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.all(16),
+      //   child: RawButton(
+      //     label: locale.needHelp,
+      //     onTap: () {},
+      //     active: true,
+      //     customColor: AppColors.gray2,
+      //     invertTextColor: true,
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
         minimum: EdgeInsets.only(
           top: MediaQuery.of(context).padding.top,

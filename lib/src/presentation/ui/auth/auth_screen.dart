@@ -9,7 +9,7 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final locale = AppLocale.of(context);
-    return WillPopScope(
+    return PopScope(
       child: Scaffold(
         body: SafeArea(
           minimum: EdgeInsets.symmetric(
@@ -79,7 +79,7 @@ class AuthScreen extends StatelessWidget {
           ),
         ),
       ),
-      onWillPop: () async => false,
+      canPop: false,
     );
   }
 }

@@ -33,7 +33,7 @@ class RawButton extends StatelessWidget {
           children: [
             Text(
               label,
-              style: theme.textTheme.headline3?.copyWith(
+              style: theme.textTheme.headlineSmall?.copyWith(
                   color: active
                       ? invertTextColor == true
                           ? AppColors.black

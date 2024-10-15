@@ -39,12 +39,12 @@ class OrderCard extends StatelessWidget {
                 children: [
                   Text(
                     DateFormat('dd MMMM yyyy г. в hh:mm').format(order.date_created),
-                    style: theme.textTheme.headline2?.copyWith(
+                    style: theme.textTheme.headlineMedium?.copyWith(
                         fontSize: 16.sp, fontWeight: FontWeight.w700, color: AppColors.black, letterSpacing: -0.06),
                   ),
                   Text(
                     '${order.order_products_count} блюда на ' + (order.order_total).toInt().toString() + '₽',
-                    style: theme.textTheme.headline2?.copyWith(
+                    style: theme.textTheme.headlineMedium?.copyWith(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                       color: AppColors.gray1,
@@ -55,7 +55,7 @@ class OrderCard extends StatelessWidget {
               const Spacer(),
               Text(
                 '${(order.courier_payment).toInt()}₽',
-                style: theme.textTheme.headline2?.copyWith(
+                style: theme.textTheme.headlineMedium?.copyWith(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w700,
                   color: AppColors.black,
@@ -105,12 +105,12 @@ class OrderCardFull extends StatelessWidget {
                   children: [
                     Text(
                       DateFormat('dd MMMM yyyy г. в hh:mm').format(order.date_created!),
-                      style: theme.textTheme.headline2?.copyWith(
+                      style: theme.textTheme.headlineMedium?.copyWith(
                           fontSize: 16.sp, fontWeight: FontWeight.w700, color: AppColors.black, letterSpacing: -0.06),
                     ),
                     Text(
                       '${order.lineItems.length} блюда на ' + (order.total).toInt().toString() + '₽',
-                      style: theme.textTheme.headline2?.copyWith(
+                      style: theme.textTheme.headlineMedium?.copyWith(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
                         color: AppColors.gray1,

@@ -11,7 +11,7 @@ class ErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return PopScope(
       child: Scaffold(
         body: SafeArea(
           minimum: EdgeInsets.symmetric(
@@ -24,7 +24,7 @@ class ErrorScreen extends StatelessWidget {
           ),
         ),
       ),
-      onWillPop: () async => false,
+      canPop: false,
     );
   }
 }

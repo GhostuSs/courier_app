@@ -20,36 +20,24 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: 'config.env');
   await configureDependencies(Environment.prod);
   getIt<AwesomeNotifications>().initialize(null, [
     NotificationChannel(
-        channelKey: 'basic_channel',
-        channelName: 'Basic notifications',
-        channelDescription: 'Notification channel for basic tests',
-        )
+      channelKey: 'basic_channel',
+      channelName: 'Basic notifications',
+      channelDescription: 'Notification channel for basic tests',
+    )
   ]);
   await SecureStorage.getToken();
   _initFirebase();
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 90));
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  await SentryFlutter.init(
-        (options) {
-
-      options.dsn = 'https://bec84eb3f54035926afa8a1fde2e7f24@o4506711726161920.ingest.us.sentry.io/4507282639945728';
-      options
-          ..tracesSampleRate = 1.0
-          ..reportSilentFlutterErrors = true
-          ..reportPackages = true
-          ..enableAutoSessionTracking = true
-          ..enableTracing = true
-          ..enableNativeCrashHandling = true;
-    },
-    appRunner: () => runApp(App()),
+  runApp(
+    App(),
   );
 }
 
@@ -57,9 +45,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   getIt<AwesomeNotifications>().initialize(null, [
     NotificationChannel(
-        channelKey: 'basic_channel',
-        channelName: 'Basic notifications',
-        channelDescription: 'Notification channel for basic tests',
+      channelKey: 'basic_channel',
+      channelName: 'Basic notifications',
+      channelDescription: 'Notification channel for basic tests',
     )
   ]);
   getIt<AwesomeNotifications>().createNotificationFromJsonData(message.data);

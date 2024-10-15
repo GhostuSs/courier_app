@@ -6,7 +6,7 @@ class MainScreen extends StatelessWidget {
   MainController get controller => Get.find<MainController>();
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return PopScope(
       child: GetBuilder(
         init: controller,
         initState: (_) => controller.initialize(),
@@ -40,7 +40,7 @@ class MainScreen extends StatelessWidget {
           ),
         ),
       ),
-      onWillPop: () async => false,
+      canPop: false,
     );
   }
 }
