@@ -150,7 +150,6 @@ class ApiServiceImpl extends ApiService {
       debugPrint(e.toString());
       return null;
     }
-    return null;
   }
 
   List<EarningResponseModel> _convertToList({required Map<String, dynamic> json}) {

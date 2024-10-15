@@ -149,7 +149,7 @@ class EarnAndHistoryScreen extends StatelessWidget {
                           Column(
                             children: [
                               for (final EarningResponseModel eDay in controller.orderEarnings.value
-                                  .where((element) => _conditionHandler(date: element.date)))
+                                  .where((element) => _conditionHandler(date: element.date),))
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

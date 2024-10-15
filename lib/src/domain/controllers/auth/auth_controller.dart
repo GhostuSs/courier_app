@@ -4,30 +4,29 @@ import 'package:courier_app/src/domain/services/api/api_service.dart';
 import 'package:courier_app/src/domain/services/secure_storage/secure_storage_service.dart';
 import 'package:courier_app/src/presentation/ui/main/main_screen.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:get/get.dart';
 
-import '../../../../res/colors/app_colors.dart';
+import 'package:courier_app/res/barrels/barrel.dart';
 
 class AuthController extends GetxController {
-  RxString login = ''.obs;
-  RxString pass = ''.obs;
+  TextEditingController loginController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+
   RxBool entryEnabled = false.obs;
   RxBool obscurePass = true.obs;
   RxBool authorizing = false.obs;
-  void onChange({String? login, String? pass}) {
-    if (login != null) this.login.value = login;
-    if (pass != null) this.pass.value = pass;
-    entryEnabled.value = EmailValidator.validate(this.login.value) && this.pass.value.length >= 6;
+
+  void onChange() {
+    entryEnabled.value = EmailValidator.validate(loginController.text) && passController.text.length >= 6;
   }
 
   void changeObscuring() => obscurePass.value = !obscurePass.value;
 
   Future<void> authorize() async {
-    if (login.value.isEmpty || pass.value.isEmpty) return;
+    if (loginController.text.isEmpty || passController.text.isEmpty) return;
     authorizing.value = true;
     final model = AuthRequestModel(
-      email: login.value,
-      password: pass.value,
+      email: loginController.text,
+      password: passController.text,
     );
     try {
       final loginData = await getIt<ApiService>().login(model: model) ?? null;
@@ -35,14 +34,8 @@ class AuthController extends GetxController {
         await SecureStorage.putToken(responseModel: loginData);
         await SecureStorage.getToken();
         Future.delayed(
-          const Duration(
-            milliseconds: 500,
-          ),
-        ).then(
-          (value) => Get.to(
-            const MainScreen(),
-          ),
-        );
+          const Duration(milliseconds: 500),
+        ).then((value) => Get.off(const MainScreen()));
       } else {
         Get.snackbar(
           'Ошибка авторизации',
@@ -51,7 +44,7 @@ class AuthController extends GetxController {
           colorText: AppColors.white,
         );
       }
-    } on Exception catch (e) {
+    } catch (e) {
       print(e);
       print('error auth');
     }
