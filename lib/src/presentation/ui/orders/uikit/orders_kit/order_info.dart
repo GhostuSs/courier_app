@@ -6,7 +6,6 @@ import 'package:courier_app/src/presentation/ui/orders/uikit/orders_kit/merchant
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class OrderInfo extends StatelessWidget {
   const OrderInfo({super.key});
 
@@ -26,65 +25,70 @@ class OrderInfo extends StatelessWidget {
               floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
               floatingActionButton: Obx(
                 () => controller.selectedOrder.value.status != OrderStatuses.completed
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                        child: Container(
-                          height: 56.h,
-                          child: Stack(
-                            children: [
-                              ColorSlider(
-                                height: 56.h,
-                                onComplete: () async => await Get.dialog(
-                                  CupertinoAlertDialog(
-                                    title: Text(
-                                      'Вы ${controller.selectedOrder.value.status == OrderStatuses.courier ? "доставили" : "забрали"} заказ?',
-                                    ),
-                                    content: Text(
-                                      'Подтвердите, что ${controller.selectedOrder.value.status == OrderStatuses.courier ? "заказ доставлен получателю" : "забрали заказ и выезжайте на адрес доставки"}',
-                                    ),
-                                    actions: [
-                                      CupertinoDialogAction(
-                                        child: const Text('Подтвердить'),
-                                        onPressed: () async {
-                                          Get.back();
-                                          controller.selectedOrder.value = controller.selectedOrder.value.copyWith(
-                                            status: controller.selectedOrder.value.status == OrderStatuses.courier
-                                                ? OrderStatuses.completed
-                                                : OrderStatuses.courier,
-                                          );
-                                          await controller.handleOrderStatus();
-                                          if (controller.selectedOrder.value.status == OrderStatuses.completed) {
-                                            Get.dialog(OrderDelivered(number: controller.selectedOrder.value.id))
-                                                .then((value) => Get.back());
-                                          }
-                                        },
+                    ? controller.enableLoader.value
+                        ? SizedBox()
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            child: Container(
+                              height: 56.h,
+                              child: Stack(
+                                children: [
+                                  ColorSlider(
+                                    height: 56.h,
+                                    onComplete: () async => await Get.dialog(
+                                      CupertinoAlertDialog(
+                                        title: Text(
+                                          'Вы ${controller.selectedOrder.value.status == OrderStatuses.courier ? "доставили" : "забрали"} заказ?',
+                                        ),
+                                        content: Text(
+                                          'Подтвердите, что ${controller.selectedOrder.value.status == OrderStatuses.courier ? "заказ доставлен получателю" : "забрали заказ и выезжайте на адрес доставки"}',
+                                        ),
+                                        actions: [
+                                          CupertinoDialogAction(
+                                            child: const Text('Подтвердить'),
+                                            onPressed: () async {
+                                              Navigator.of(context).pop();
+                                              controller.selectedOrder.value = controller.selectedOrder.value.copyWith(
+                                                status: controller.selectedOrder.value.status == OrderStatuses.courier
+                                                    ? OrderStatuses.completed
+                                                    : OrderStatuses.courier,
+                                              );
+                                              await controller.handleOrderStatus();
+
+                                              if (controller.selectedOrder.value.status == OrderStatuses.completed) {
+                                                Get.dialog(OrderDelivered(number: controller.selectedOrder.value.id))
+                                                    .then(
+                                                  (value) =>Get.back(),
+                                                );
+                                              }
+                                            },
+                                          ),
+                                          CupertinoDialogAction(
+                                            child: const Text('Отмена'),
+                                            isDefaultAction: true,
+                                            onPressed: Get.back,
+                                          ),
+                                        ],
                                       ),
-                                      CupertinoDialogAction(
-                                        child: const Text('Отмена'),
-                                        isDefaultAction: true,
-                                        onPressed: Get.back,
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      controller.selectedOrder.value.status == OrderStatuses.courier
+                                          ? locale.orderDelivered
+                                          : locale.orderPicked,
+                                      style: theme.textTheme.displaySmall?.copyWith(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.white,
+                                          letterSpacing: -0.03),
+                                    ),
+                                  )
+                                ],
                               ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  controller.selectedOrder.value.status == OrderStatuses.courier
-                                      ? locale.orderDelivered
-                                      : locale.orderPicked,
-                                  style: theme.textTheme.displaySmall?.copyWith(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.white,
-                                      letterSpacing: -0.03),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
+                            ),
+                          )
                     : const SizedBox(),
               ),
               appBar: AppBar(
@@ -123,149 +127,165 @@ class OrderInfo extends StatelessWidget {
               body: SingleChildScrollView(
                 physics: const ClampingScrollPhysics(),
                 child: SafeArea(
-                    minimum: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 24),
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r), color: AppColors.gray3),
-                          child: Column(
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    width: 258.w,
-                                    child: RichText(
-                                      text: TextSpan(
-                                        text: controller.selectedOrder.value.address_1 ??
-                                            controller.selectedOrder.value.shipping.addres_2,
-                                        style: theme.textTheme.displayMedium?.copyWith(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: AppColors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () => controller.selectedOrder.value.latitude != null &&
-                                            controller.selectedOrder.value.longtitude != null
-                                        ? launchUrl(Uri.parse(
-                                            "https://maps.yandex.ru/?pt=${controller.selectedOrder.value.longtitude},${controller.selectedOrder.value.latitude}&z=18&l=map"))
-                                        : print('-'),
-                                    child: Assets.images.location.svg(width: 24.sp),
-                                  ),
-                                ],
+                  minimum: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Obx(() => controller.enableLoader.value
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.25,
+                            ),
+                            Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors.red,
                               ),
-                              const SizedBox(height: 4),
-                              if (controller.selectedOrder.value.customer_note.isNotEmpty == true)
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.yellow2.withOpacity(0.36),
-                                    borderRadius: BorderRadius.circular(10.r),
-                                  ),
-                                  child: RichText(
-                                    text: TextSpan(
-                                      text: controller.selectedOrder.value.customer_note,
-                                      style: theme.textTheme.displayMedium?.copyWith(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.black,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        if (controller.selectedOrder.value.phone != null)
-                          InkWell(
-                            onTap: () =>
-                                _makePhoneCall('tel:${_numberPreparer(phone: controller.selectedOrder.value.phone!)}'),
-                            child: Container(
+                            )
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 24),
+                            Container(
                               padding: const EdgeInsets.all(16),
                               decoration:
                                   BoxDecoration(borderRadius: BorderRadius.circular(10.r), color: AppColors.gray3),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              child: Column(
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      text: _numberPreparer(phone: controller.selectedOrder.value.phone!),
-                                      style: theme.textTheme.displayMedium?.copyWith(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.black,
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: 258.w,
+                                        child: RichText(
+                                          text: TextSpan(
+                                            text: controller.selectedOrder.value.address_1 ??
+                                                controller.selectedOrder.value.shipping.addres_2,
+                                            style: theme.textTheme.displayMedium?.copyWith(
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.black,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      InkWell(
+                                        onTap: () => controller.selectedOrder.value.latitude != null &&
+                                                controller.selectedOrder.value.longtitude != null
+                                            ? launchUrl(Uri.parse(
+                                                "https://maps.yandex.ru/?pt=${controller.selectedOrder.value.longtitude},${controller.selectedOrder.value.latitude}&z=18&l=map"))
+                                            : print('-'),
+                                        child: Assets.images.location.svg(width: 24.sp),
+                                      ),
+                                    ],
                                   ),
-                                  Assets.images.phone.svg(
-                                    width: 24.sp,
-                                  )
+                                  const SizedBox(height: 4),
+                                  if (controller.selectedOrder.value.customer_note.isNotEmpty == true)
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.yellow2.withOpacity(0.36),
+                                        borderRadius: BorderRadius.circular(10.r),
+                                      ),
+                                      child: RichText(
+                                        text: TextSpan(
+                                          text: controller.selectedOrder.value.customer_note,
+                                          style: theme.textTheme.displayMedium?.copyWith(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    )
                                 ],
                               ),
                             ),
-                          ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 24),
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: AppColors.gray3,
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            child: Row(
-                              children: [
-                                Assets.images.ruble.svg(width: 24.sp),
-                                const SizedBox(width: 12),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            const SizedBox(height: 8),
+                            if (controller.selectedOrder.value.phone != null)
+                              InkWell(
+                                onTap: () => _makePhoneCall(
+                                    'tel:${_numberPreparer(phone: controller.selectedOrder.value.phone!)}'),
+                                child: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration:
+                                      BoxDecoration(borderRadius: BorderRadius.circular(10.r), color: AppColors.gray3),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      RichText(
+                                        text: TextSpan(
+                                          text: _numberPreparer(phone: controller.selectedOrder.value.phone!),
+                                          style: theme.textTheme.displayMedium?.copyWith(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      Assets.images.phone.svg(
+                                        width: 24.sp,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 24),
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: AppColors.gray3,
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
+                                child: Row(
                                   children: [
-                                    RichText(
-                                      text: TextSpan(
-                                        text: '${controller.selectedOrder.value.total.round()} ₽',
-                                        style: theme.textTheme.displayMedium?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 16.sp,
-                                          color: AppColors.black,
+                                    Assets.images.ruble.svg(width: 24.sp),
+                                    const SizedBox(width: 12),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            text: '${controller.selectedOrder.value.total.round()} ₽',
+                                            style: theme.textTheme.displayMedium?.copyWith(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16.sp,
+                                              color: AppColors.black,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        text: controller.selectedOrder.value.payment_method_title,
-                                        style: theme.textTheme.displayMedium?.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16.sp,
-                                          color: AppColors.black,
+                                        RichText(
+                                          text: TextSpan(
+                                            text: controller.selectedOrder.value.payment_method_title,
+                                            style: theme.textTheme.displayMedium?.copyWith(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16.sp,
+                                              color: AppColors.black,
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                        Text(
-                          locale.orderCart,
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        for (final data in controller.selectedOrder.value.lineItems) MerchantItem(merchant: data),
-                        SizedBox(height: 100.h),
-                      ],
-                    )),
+                            Text(
+                              locale.orderCart,
+                              style: theme.textTheme.headlineMedium?.copyWith(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            for (final data in controller.selectedOrder.value.lineItems) MerchantItem(merchant: data),
+                            SizedBox(height: 100.h),
+                          ],
+                        )),
+                ),
               ),
             )),
       ),
