@@ -15,27 +15,30 @@ class AuthController extends GetxController {
   void onChange({String? login, String? pass}) {
     if (login != null) this.login.value = login;
     if (pass != null) this.pass.value = pass;
-    entryEnabled.value = EmailValidator.validate(this.login.value) &&
-        this.pass.value.length >= 6;
+    entryEnabled.value = EmailValidator.validate(this.login.value) && this.pass.value.length >= 6;
   }
 
   void changeObscuring() => obscurePass.value = !obscurePass.value;
 
   Future<void> authorize() async {
-    authorizing.value=true;
+    authorizing.value = true;
     final model = AuthRequestModel(email: login.value, password: pass.value);
-    try{
+    try {
       final loginData = await getIt<ApiService>().login(model: model) ?? null;
       print(loginData);
       if (loginData != null) {
         await SecureStorage.putToken(responseModel: loginData);
         await SecureStorage.getToken();
-        Future.delayed(const Duration(milliseconds: 500))
-            .then((value) => Get.to(const MainScreen()));
+        Future.delayed(const Duration(milliseconds: 500)).then(
+          (value) => Get.to(
+            const MainScreen(),
+          ),
+        );
       }
-    }on Exception catch(e){
+    } on Exception catch (e) {
       print(e);
+      print('error auth');
     }
-    authorizing.value=false;
+    authorizing.value = false;
   }
 }

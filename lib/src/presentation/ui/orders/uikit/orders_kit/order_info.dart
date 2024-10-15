@@ -1,10 +1,11 @@
-import 'package:action_slider/action_slider.dart';
 import 'package:courier_app/res/barrels/barrel.dart';
 import 'package:courier_app/src/domain/controllers/order/order_controller.dart';
 import 'package:courier_app/src/domain/models/order/statuses/order_statuses_model.dart';
+import 'package:courier_app/src/presentation/ui/orders/uikit/color_slider.dart';
 import 'package:courier_app/src/presentation/ui/orders/uikit/orders_kit/merchant_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 
 class OrderInfo extends StatelessWidget {
   const OrderInfo({super.key});
@@ -26,46 +27,46 @@ class OrderInfo extends StatelessWidget {
               floatingActionButton: Obx(
                 () => controller.selectedOrder.value.status != OrderStatuses.completed
                     ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                         child: Container(
                           height: 56.h,
                           child: Stack(
                             children: [
-                              ActionSlider.standard(
+                              ColorSlider(
                                 height: 56.h,
-                                action: (_) async => Get.dialog(CupertinoAlertDialog(
-                                  title: Text(
-                                      'Вы ${controller.selectedOrder.value.status == OrderStatuses.courier ? "доставили" : "забрали"} заказ?'),
-                                  content: Text(
-                                      'Подтвердите, что ${controller.selectedOrder.value.status == OrderStatuses.courier ? "заказ доставлен получателю" : "забрали заказ и выезжайте на адрес доставки"}'),
-                                  actions: [
-                                    CupertinoDialogAction(
-                                      child: const Text('Подтвердить'),
-                                      onPressed: () async {
-                                        Get.back();
-                                        controller.selectedOrder.value=controller.selectedOrder.value.copyWith(status: controller.selectedOrder.value.status == OrderStatuses.courier ? OrderStatuses.completed : OrderStatuses.courier);
-                                        await controller.handleOrderStatus();
-                                        if (controller.selectedOrder.value.status == OrderStatuses.completed)
-                                          Get.dialog(OrderDelivered(number: controller.selectedOrder.value.id))
-                                              .then((value) => Get.back());
-                                      },
+                                onComplete: () async => await Get.dialog(
+                                  CupertinoAlertDialog(
+                                    title: Text(
+                                      'Вы ${controller.selectedOrder.value.status == OrderStatuses.courier ? "доставили" : "забрали"} заказ?',
                                     ),
-                                    CupertinoDialogAction(
-                                      child: const Text('Отмена'),
-                                      isDefaultAction: true,
-                                      onPressed: Get.back,
+                                    content: Text(
+                                      'Подтвердите, что ${controller.selectedOrder.value.status == OrderStatuses.courier ? "заказ доставлен получателю" : "забрали заказ и выезжайте на адрес доставки"}',
                                     ),
-                                  ],
-                                )),
-                                icon: Icon(
-                                  Icons.add,
-                                  color: AppColors.white,
+                                    actions: [
+                                      CupertinoDialogAction(
+                                        child: const Text('Подтвердить'),
+                                        onPressed: () async {
+                                          Get.back();
+                                          controller.selectedOrder.value = controller.selectedOrder.value.copyWith(
+                                            status: controller.selectedOrder.value.status == OrderStatuses.courier
+                                                ? OrderStatuses.completed
+                                                : OrderStatuses.courier,
+                                          );
+                                          await controller.handleOrderStatus();
+                                          if (controller.selectedOrder.value.status == OrderStatuses.completed) {
+                                            Get.dialog(OrderDelivered(number: controller.selectedOrder.value.id))
+                                                .then((value) => Get.back());
+                                          }
+                                        },
+                                      ),
+                                      CupertinoDialogAction(
+                                        child: const Text('Отмена'),
+                                        isDefaultAction: true,
+                                        onPressed: Get.back,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                backgroundColor: controller.selectedOrder.value.status == OrderStatuses.courier
-                                    ? AppColors.green
-                                    : AppColors.red,
-                                boxShadow: const [],
-                                toggleColor: AppColors.white,
                               ),
                               Align(
                                 alignment: Alignment.center,
@@ -140,13 +141,13 @@ class OrderInfo extends StatelessWidget {
                                     width: 258.w,
                                     child: RichText(
                                       text: TextSpan(
-                                          text: controller.selectedOrder.value.address_1 ??
-                                              controller.selectedOrder.value.shipping.addres_2,
-                                          style: theme.textTheme.displayMedium?.copyWith(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: AppColors.black,
-                                          ),
+                                        text: controller.selectedOrder.value.address_1 ??
+                                            controller.selectedOrder.value.shipping.addres_2,
+                                        style: theme.textTheme.displayMedium?.copyWith(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.black,
+                                        ),
                                       ),
                                     ),
                                   ),
