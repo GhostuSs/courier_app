@@ -6,6 +6,8 @@ import 'package:courier_app/src/presentation/ui/main/main_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:get/get.dart';
 
+import '../../../../res/colors/app_colors.dart';
+
 class AuthController extends GetxController {
   RxString login = ''.obs;
   RxString pass = ''.obs;
@@ -21,11 +23,11 @@ class AuthController extends GetxController {
   void changeObscuring() => obscurePass.value = !obscurePass.value;
 
   Future<void> authorize() async {
+    if (login.value.isEmpty || pass.value.isEmpty) return;
     authorizing.value = true;
     final model = AuthRequestModel(email: login.value, password: pass.value);
     try {
       final loginData = await getIt<ApiService>().login(model: model) ?? null;
-      print(loginData);
       if (loginData != null) {
         await SecureStorage.putToken(responseModel: loginData);
         await SecureStorage.getToken();
@@ -33,6 +35,13 @@ class AuthController extends GetxController {
           (value) => Get.to(
             const MainScreen(),
           ),
+        );
+      } else {
+        Get.snackbar(
+          'Ошибка авторизации',
+          "Неверный логин или пароль",
+          backgroundColor: AppColors.red,
+          colorText: AppColors.white,
         );
       }
     } on Exception catch (e) {
