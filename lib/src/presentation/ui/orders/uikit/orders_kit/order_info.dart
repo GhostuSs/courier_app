@@ -53,20 +53,16 @@ class OrderInfo extends StatelessWidget {
                                                     ? OrderStatuses.completed
                                                     : OrderStatuses.courier,
                                               );
-                                              await controller.handleOrderStatus();
-
+                                              await controller.handleOrderStatus(context);
                                               if (controller.selectedOrder.value.status == OrderStatuses.completed) {
-                                                Get.dialog(OrderDelivered(number: controller.selectedOrder.value.id))
-                                                    .then(
-                                                  (value) => Get.back(),
-                                                );
+                                                Get.dialog(OrderDelivered(number: controller.selectedOrder.value.id));
                                               }
                                             },
                                           ),
                                           CupertinoDialogAction(
                                             child: const Text('Отмена'),
                                             isDefaultAction: true,
-                                            onPressed: Get.back,
+                                            onPressed: ()=>Navigator.of(context).pop(),
                                           ),
                                         ],
                                       ),

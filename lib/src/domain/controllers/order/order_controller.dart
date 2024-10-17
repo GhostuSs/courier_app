@@ -83,7 +83,7 @@ class OrderController extends GetxController {
 
   void selectOrder({required OrderResponseModel order}) => selectedOrder.value = order;
 
-  Future<void> handleOrderStatus() async {
+  Future<void> handleOrderStatus(BuildContext context) async {
     enableLoader.value = true;
     if (selectedOrder.value.status != OrderStatuses.courier) {
       if (await _apiService.acceptOrder(order_id: selectedOrder.value.id) == true) {
@@ -103,6 +103,7 @@ class OrderController extends GetxController {
     } else {
       if (await _apiService.deliverOrder(order_id: selectedOrder.value.id) == true) {
         selectedOrder.value.status = OrderStatuses.completed;
+        Navigator.of(context).pop();
         Get.snackbar(
           'Завершено',
           'Заказ успешно доставлен',
@@ -113,6 +114,7 @@ class OrderController extends GetxController {
           ),
           backgroundColor: AppColors.green.withOpacity(0.8),
         );
+
         await getOrders();
       }
     }
